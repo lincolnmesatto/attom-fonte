@@ -15,6 +15,7 @@ import util.Uteis;
 
 @Named(value="usuarioController")
 @SessionScoped
+//@ApplicationScoped
 public class UsuarioController implements Serializable {
 
 	private static final long serialVersionUID = -6004071469836183158L;
@@ -36,12 +37,12 @@ public class UsuarioController implements Serializable {
  
 		if(StringUtils.isEmpty(usuario.getLogin()) || StringUtils.isBlank(usuario.getLogin())){
  
-			Uteis.Mensagem("Favor informar o login!");
+			Uteis.mensagem("Favor informar o login!");
 			return null;
 		}
 		else if(StringUtils.isEmpty(usuario.getSenha()) || StringUtils.isBlank(usuario.getSenha())){
  
-			Uteis.Mensagem("Favor informara senha!");
+			Uteis.mensagem("Favor informara senha!");
 			return null;
 		}
 		else{	
@@ -50,18 +51,18 @@ public class UsuarioController implements Serializable {
  
 			if(usuario!= null){
  
-				usuario.setSenha(null);
+//				usuario.setSenha(null);
  
 				FacesContext facesContext = FacesContext.getCurrentInstance();
  
-				facesContext.getExternalContext().getSessionMap().put("usuarioAutenticado", usuario);
+				facesContext.getExternalContext().getSessionMap().put("idUsuarioAutenticado", usuario.getId());
  
  
 				return "sistema/home?faces-redirect=true";
 			}
 			else{
  
-				Uteis.Mensagem("Não foi possível efetuar o login com esse usuário e senha!");
+				Uteis.mensagem("Não foi possível efetuar o login com esse usuário e senha!");
 				return null;
 			}
 		}

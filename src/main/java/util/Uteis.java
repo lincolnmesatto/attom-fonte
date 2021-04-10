@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public class Uteis {
 	
-	public static EntityManager JpaEntityManager(){
+	public static EntityManager jpaEntityManager(){
 		 
 		FacesContext facesContext = FacesContext.getCurrentInstance();
  
@@ -20,7 +20,7 @@ public class Uteis {
 	} 
 	
 	//MOSTRAR MENSAGEM
-	public static void Mensagem(String mensagem){
+	public static void mensagem(String mensagem){
  
 		FacesContext facesContext = FacesContext.getCurrentInstance();
  
@@ -28,7 +28,7 @@ public class Uteis {
 	}
  
 	//MOSTRAR MENSAGEM
-	public static void MensagemAtencao(String mensagem){
+	public static void mensagemAtencao(String mensagem){
  
 		FacesContext facesContext = FacesContext.getCurrentInstance();
  
@@ -36,7 +36,7 @@ public class Uteis {
 	}
  
 	//MOSTRAR MENSAGEM
-	public static void MensagemInfo(String mensagem){
+	public static void mensagemInfo(String mensagem){
  
 		FacesContext facesContext = FacesContext.getCurrentInstance();
  

@@ -15,7 +15,7 @@ public class UsuarioRepository implements Serializable {
 		 
 		try {
  
-			Query query = Uteis.JpaEntityManager().createNamedQuery("Usuario.findUser");
+			Query query = Uteis.jpaEntityManager().createNamedQuery("Usuario.findUser");
  
 			query.setParameter("login", usuario.getLogin());
 			query.setParameter("senha", usuario.getSenha());
