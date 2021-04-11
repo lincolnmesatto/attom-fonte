@@ -20,7 +20,6 @@ public class UsuarioRepository implements Serializable {
 			query.setParameter("login", usuario.getLogin());
 			query.setParameter("senha", usuario.getSenha());
  
-			//RETORNA O USUÁRIO SE FOR LOCALIZADO
 			return (Usuario)query.getSingleResult();
  
 		} catch (Exception e) {
