@@ -15,7 +15,6 @@ import util.Uteis;
 
 @Named(value="usuarioController")
 @SessionScoped
-//@ApplicationScoped
 public class UsuarioController implements Serializable {
 
 	private static final long serialVersionUID = -6004071469836183158L;
@@ -27,7 +26,6 @@ public class UsuarioController implements Serializable {
 	private Usuario usuario;
 	
 	public String logout(){
- 
 		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
  
 		return "/index.xhtml?faces-redirect=true";
@@ -50,13 +48,8 @@ public class UsuarioController implements Serializable {
 			usuario = usuarioRepository.validaUsuario(usuario);
  
 			if(usuario!= null){
- 
-//				usuario.setSenha(null);
- 
 				FacesContext facesContext = FacesContext.getCurrentInstance();
- 
 				facesContext.getExternalContext().getSessionMap().put("idUsuarioAutenticado", usuario.getId());
- 
  
 				return "sistema/home?faces-redirect=true";
 			}
@@ -69,12 +62,11 @@ public class UsuarioController implements Serializable {
  
 	}
 	
-	public Usuario getUsuarioSession(){
-		 
-		FacesContext facesContext = FacesContext.getCurrentInstance();
- 
-		return (Usuario)facesContext.getExternalContext().getSessionMap().get("usuarioAutenticado");
-	}
+//	public Usuario getUsuarioSession(){
+//		FacesContext facesContext = FacesContext.getCurrentInstance();
+// 
+//		return (Usuario)facesContext.getExternalContext().getSessionMap().get("usuarioAutenticado");
+//	}
 
 	public Usuario getUsuario() {
 		return usuario;

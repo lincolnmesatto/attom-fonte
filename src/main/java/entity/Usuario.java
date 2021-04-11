@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-@Table(name = "usuario")
+@Table(name = "tb_usuario")
 @Entity
 
 @NamedQuery(name = "Usuario.findUser", query= "SELECT u FROM Usuario u WHERE u.login = :login AND u.senha = :senha")
@@ -22,26 +22,35 @@ public class Usuario implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "cod_usuario")
-	private int id;
+	private Integer id;
 	
-	@Column(name = "login", length = 45)
+	@Column(name = "login", length = 45, nullable = false)
 	private String login;
 	
-	@Column(name = "senha", length = 45)
+	@Column(name = "senha", length = 45, nullable = false)
 	private String senha;
 	
-	@Column(name = "nome", length = 100)
+	@Column(name = "nome", length = 100, nullable = false)
 	private String nome;
 	
-	@Column(name = "email", length = 45)
+	@Column(name = "email", length = 45, nullable = false)
 	private String email;
 
+	public Usuario() {}
 	
-	public int getId() {
+	public Usuario(Integer id, String login, String senha, String nome, String email) {
+		this.id = id;
+		this.login = login;
+		this.senha = senha;
+		this.nome = nome;
+		this.email = email;
+	}
+
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
