@@ -32,7 +32,7 @@ public class ColecaoController implements Serializable {
 	public String iniciarProcesso() {
 		System.out.println("chegou");
 		
-		FacesContext facesContext = FacesContext.getCurrentInstance();
+//		FacesContext facesContext = FacesContext.getCurrentInstance();
 		return "manterColecao?faces-redirect=true";
 	}
 	

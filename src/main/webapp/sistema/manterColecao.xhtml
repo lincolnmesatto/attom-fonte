@@ -11,8 +11,15 @@
 <ui:composition template="/template/layoutBase.xhtml">
  
 	<ui:define name="content">
-		<p:commandButton value="Acessar" styleClass="btn btn-danger"
-				 		 action="#{colecaoController.salvar()}" />	    
+ 		<div class="card">
+   			 <h:form>
+			    <br/>
+				<p:commandButton value="Teste Incluir Coleção" styleClass="btn btn-danger"
+				 		 action="#{colecaoController.salvar()}" />
+				<p:commandButton value="Teste Incluir Coleção Pt2" styleClass="btn btn-danger"
+				 		 action="#{colecaoController.salvarPt2()}" />
+		    </h:form>
+		 </div>       
  
 	</ui:define>
  
