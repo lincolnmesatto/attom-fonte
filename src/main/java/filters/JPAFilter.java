@@ -20,7 +20,6 @@ import javax.servlet.annotation.WebFilter;
 @WebFilter(servletNames ={ "Faces Servlet" })
 public class JPAFilter implements Filter {
  
- 
 	private EntityManagerFactory entityManagerFactory;
  
 	private String persistence_unit_name = "unit_app";
@@ -35,7 +34,6 @@ public class JPAFilter implements Filter {
 	}
  
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
- 
 		/*CRIANDO UM ENTITYMANAGER*/
 		EntityManager entityManager =  this.entityManagerFactory.createEntityManager();
  
@@ -49,24 +47,18 @@ public class JPAFilter implements Filter {
 		chain.doFilter(request, response);
  
 		try {
- 
 			/*SE NÃO TIVER ERRO NA OPERAÇÃO ELE EXECUTA O COMMIT*/
 			entityManager.getTransaction().commit();
- 
 		} catch (Exception e) {
- 
 			/*SE TIVER ERRO NA OPERAÇÃO É EXECUTADO O rollback*/
 			entityManager.getTransaction().rollback();
-		}
-		finally{
- 
+		}finally{
 			/*DEPOIS DE DAR O COMMIT OU ROLLBACK ELE FINALIZA O entityManager*/
 			entityManager.close();
 		}
 	}
  
 	public void init(FilterConfig fConfig) throws ServletException {
- 
 		/*CRIA O entityManagerFactory COM OS PARÂMETROS DEFINIDOS NO persistence.xml*/
 		this.entityManagerFactory = Persistence.createEntityManagerFactory(this.persistence_unit_name); 
 	}

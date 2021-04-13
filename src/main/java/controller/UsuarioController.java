@@ -32,29 +32,22 @@ public class UsuarioController implements Serializable {
 	}
 	
 	public String efetuarLogin(){
- 
 		if(StringUtils.isEmpty(usuario.getLogin()) || StringUtils.isBlank(usuario.getLogin())){
  
 			Uteis.mensagem("Favor informar o login!");
 			return null;
-		}
-		else if(StringUtils.isEmpty(usuario.getSenha()) || StringUtils.isBlank(usuario.getSenha())){
+		}else if(StringUtils.isEmpty(usuario.getSenha()) || StringUtils.isBlank(usuario.getSenha())){
  
 			Uteis.mensagem("Favor informara senha!");
 			return null;
-		}
-		else{	
- 
+		}else{	
 			usuario = usuarioRepository.validaUsuario(usuario);
- 
 			if(usuario!= null){
 				FacesContext facesContext = FacesContext.getCurrentInstance();
 				facesContext.getExternalContext().getSessionMap().put("idUsuarioAutenticado", usuario.getId());
  
 				return "sistema/home?faces-redirect=true";
-			}
-			else{
- 
+			}else{
 				Uteis.mensagem("Não foi possível efetuar o login com esse usuário e senha!");
 				return null;
 			}

@@ -7,10 +7,18 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Table(name = "tb_autor")
 @Entity
+
+@NamedQueries({
+	@NamedQuery(name = "Autor.listAll", query = "SELECT a FROM Autor a "),
+	@NamedQuery(name = "Autor.obterPorNome", query = "SELECT a FROM Autor a WHERE a.nome = :nome")
+})
+
 public class Autor implements Serializable {
 
 	private static final long serialVersionUID = 8840363570395883728L;

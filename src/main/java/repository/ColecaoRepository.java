@@ -3,7 +3,6 @@ package repository;
 import java.io.Serializable;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NamedQuery;
 import javax.persistence.Query;
 
 import entity.Colecao;
@@ -11,7 +10,6 @@ import entity.ColecaoAutor;
 import entity.ColecaoGenero;
 import util.Uteis;
 
-@NamedQuery(name = "Colecao.findColecao", query= "SELECT c FROM Colecao c WHERE c.titulo = :titulo AND c.usuario.id = :usuarioId")
 public class ColecaoRepository implements Serializable {
 
 	private static final long serialVersionUID = -8080794805801850994L;
@@ -48,17 +46,15 @@ public class ColecaoRepository implements Serializable {
 		}	
 	}
 	
-	public Colecao obterColecaoPorTituloUsuario(Colecao colecao){
+	public Colecao obterColecaoPorTituloUsuario(String titulo, Integer idUsuario){
 		try {
-			Query query = Uteis.jpaEntityManager().createNamedQuery("Colecao.findColecao");
- 
-			query.setParameter("titulo", colecao.getTitulo());
-			query.setParameter("usuarioId", colecao.getUsuario().getId());
- 
+			Query query = Uteis.jpaEntityManager().createNamedQuery("Colecao.obterPorTituloUsuario");
+			query.setParameter("titulo", titulo);
+			query.setParameter("id", idUsuario);
+			
 			return (Colecao)query.getSingleResult();
 		} catch (Exception e) {
 			return null;
 		}
 	}
-	
 }

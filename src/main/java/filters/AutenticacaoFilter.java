@@ -13,21 +13,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import entity.Usuario;
-
 @WebFilter("/sistema/*")
 public class AutenticacaoFilter implements Filter {
  
-    public AutenticacaoFilter() {
+    public AutenticacaoFilter() {}
  
-    }
- 
-	public void destroy() {
- 
-	}
+	public void destroy() {}
  
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
- 
 		HttpSession httpSession 				= ((HttpServletRequest) request).getSession(); 
  
 		HttpServletRequest httpServletRequest   = (HttpServletRequest) request;
@@ -35,27 +28,16 @@ public class AutenticacaoFilter implements Filter {
 		HttpServletResponse httpServletResponse = (HttpServletResponse) response;
  
 		if(httpServletRequest.getRequestURI().indexOf("index.xhtml") <= -1){
- 
 			Integer codUsuario = (Integer) httpSession.getAttribute("idUsuarioAutenticado");
  
-			if(codUsuario == null){
- 
+			if(codUsuario == null)
 				httpServletResponse.sendRedirect(httpServletRequest.getContextPath()+ "/index.xhtml");
- 
-			}
-			else{
- 
+			else
 				chain.doFilter(request, response);
-			}
-		}		
-		else{
- 
+		}else
 			chain.doFilter(request, response);
-		}
 	}
  
-	public void init(FilterConfig fConfig) throws ServletException {
- 
-	}
+	public void init(FilterConfig fConfig) throws ServletException {}
 	
 }	

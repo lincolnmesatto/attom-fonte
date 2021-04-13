@@ -7,10 +7,18 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Table(name = "tb_genero")
 @Entity
+
+@NamedQueries({
+	@NamedQuery(name = "Genero.listAll", query = "SELECT g FROM Genero g "),
+	@NamedQuery(name = "Genero.obterPorDescricao", query = "SELECT g FROM Genero g WHERE g.descricao = :descricao")
+})
+
 public class Genero implements Serializable {
 
 	private static final long serialVersionUID = 6751241645969533104L;

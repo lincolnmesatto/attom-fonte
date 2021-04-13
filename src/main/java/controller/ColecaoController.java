@@ -1,6 +1,9 @@
 package controller;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -16,7 +19,12 @@ import entity.ColecaoGeneroId;
 import entity.Editora;
 import entity.Genero;
 import entity.Usuario;
+import repository.AutorRepository;
 import repository.ColecaoRepository;
+import repository.EditoraRepository;
+import repository.GeneroRepository;
+import repository.UsuarioRepository;
+import util.Uteis;
 
 @Named(value="colecaoController")
 @SessionScoped
@@ -27,64 +35,146 @@ public class ColecaoController implements Serializable {
 	@Inject
 	private ColecaoRepository colecaoRepository;
 	
-	private Colecao colecaoRetorno;
+	@Inject
+	private UsuarioRepository usuarioRepository;
+
+	@Inject
+	private EditoraRepository editoraRepository;
+
+	@Inject
+	private AutorRepository autorRepository;
+
+	@Inject
+	private GeneroRepository generoRepository;
+	
+	private Colecao colecao;
+	private Collection<Editora> listaEditoras;
+	private Collection<String> listaNomeEditoras;
 	
 	public String iniciarProcesso() {
-		System.out.println("chegou");
+		colecao = new Colecao();
+		listaEditoras = editoraRepository.listarEditoras();
 		
-//		FacesContext facesContext = FacesContext.getCurrentInstance();
 		return "manterColecao?faces-redirect=true";
 	}
 	
-	public void salvar() {
-		try {
-			Colecao colecao = new Colecao();
-			
-			colecao.setCompleto(false);
-			colecao.setTitulo("One piece");
-			colecao.setUltimoComprado(97);
-			colecao.setUltimoLido(97);
-			
-			colecao.setUsuario(new Usuario(1, "teste", "teste", "Vou ser Deletado", "teste@email.com"));
-			colecao.setEditora(new Editora(1, "Panini"));
-			
-			colecaoRepository.salvar(colecao);
-			colecaoRetorno = colecao;
+    public Collection<String> completeText(String query) {
+        String queryLowerCase = query.toLowerCase();
+        listaNomeEditoras = new ArrayList<>();
+        
+        for (Editora editora : listaEditoras) {
+			listaNomeEditoras.add(editora.getNome());
+		}
 
-			salvarPt2();
+        return listaNomeEditoras.stream().filter(t -> t.toLowerCase().startsWith(queryLowerCase)).collect(Collectors.toList());
+    }
+    
+    public Collection<Autor> completeAutor(String query) {
+        String queryLowerCase = query.toLowerCase();
+        Collection<Autor> autores = autorRepository.listarAutores();
+        return autores.stream().filter(t -> t.getNome().toLowerCase().contains(queryLowerCase)).collect(Collectors.toList());
+    }
+
+    public Collection<Genero> completeGenero(String query) {
+    	String queryLowerCase = query.toLowerCase();
+    	Collection<Genero> generos = generoRepository.listarGeneros();
+    	return generos.stream().filter(t -> t.getDescricao().toLowerCase().contains(queryLowerCase)).collect(Collectors.toList());
+    }
+	
+	public Boolean salvar() {
+		try {
+			Colecao c = getColecao();
+
+			Usuario usuario = usuarioRepository.obterUsuarioPorId(getIdUsuarioLogado());
+			c.setUsuario(usuario);
 			
+			if(!validaColecao()) {
+				Uteis.mensagemAtencao("Coleção já cadastrada!");
+				return null;
+			}
+				
+			Editora editora = editoraRepository.obterEditoraPorNome(c.getEditoraSelecionada());
+			if(editora == null) {
+				editora = new Editora(c.getEditoraSelecionada());
+				editoraRepository.salvar(editora);
+			}
+			c.setEditora(editora);
+			
+			colecaoRepository.salvar(c);
+
+			salvarRelacionamentos(c);
+			
+			return true;
 		}catch (Exception e) {
 			e.getStackTrace();
-		}	
+		}
+		return null;	
 	}
 
-	public void salvarPt2() {
-		
-		ColecaoAutorId colecaoAutorId = new ColecaoAutorId();
-		colecaoAutorId.setAutor(new Autor(1, "Eiichiro Oda"));
-		colecaoAutorId.setColecao(colecaoRetorno);
-		
-		ColecaoAutor colecaoAutor = new ColecaoAutor();
-		colecaoAutor.setId(colecaoAutorId);
-		
-		colecaoRepository.salvarColecaoAutor(colecaoAutor);
 
-		ColecaoGeneroId colecaoGeneroId = new ColecaoGeneroId();
-		colecaoGeneroId.setGenero(new Genero(1, "Aventura"));
-		colecaoGeneroId.setColecao(colecaoRetorno);
+	public void salvarRelacionamentos(Colecao c) {
 		
-		ColecaoGenero colecaoGenero = new ColecaoGenero();
-		colecaoGenero.setId(colecaoGeneroId);
-		
-		colecaoRepository.salvarColecaoGenero(colecaoGenero);
-		
+		for (Autor autor : c.getAutoresSelecionados()) {
+			ColecaoAutorId cai = new ColecaoAutorId(colecao, autor); 
+
+			ColecaoAutor colecaoAutor = new ColecaoAutor();
+			colecaoAutor.setId(cai);
+			
+			colecaoRepository.salvarColecaoAutor(colecaoAutor);
+		}
+
+		for (Genero genero : c.getGenerosSelecionados()) {
+			ColecaoGeneroId cgi = new ColecaoGeneroId(colecao, genero); 
+			
+			ColecaoGenero colecaoGenero = new ColecaoGenero();
+			colecaoGenero.setId(cgi);
+			
+			colecaoRepository.salvarColecaoGenero(colecaoGenero);
+		}
 	}
 
-	public Colecao getColecaoRetorno() {
-		return colecaoRetorno;
+	public boolean validaColecao() {
+		Colecao c = colecaoRepository.obterColecaoPorTituloUsuario(colecao.getTitulo(), getIdUsuarioLogado());
+		
+		if(c != null)
+			return false;
+		
+		return true;
+	}
+	
+	public Integer getIdUsuarioLogado(){
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+	
+		return (Integer)facesContext.getExternalContext().getSessionMap().get("idUsuarioAutenticado");
 	}
 
-	public void setColecaoRetorno(Colecao colecaoRetorno) {
-		this.colecaoRetorno = colecaoRetorno;
+	public Colecao getColecao() {
+		if(colecao == null)
+			colecao = new Colecao();
+		return colecao;
+	}
+
+	public void setColecao(Colecao colecao) {
+		this.colecao = colecao;
+	}
+
+	public Collection<Editora> getListaEditoras() {
+		if(listaEditoras == null)
+			listaEditoras = new ArrayList<>();
+		return listaEditoras;
+	}
+
+	public void setListaEditoras(Collection<Editora> listaEditoras) {
+		this.listaEditoras = listaEditoras;
+	}
+
+	public Collection<String> getListaNomeEditoras() {
+		if(listaNomeEditoras == null)
+			listaNomeEditoras = new ArrayList<>();
+		return listaNomeEditoras;
+	}
+
+	public void setListaNomeEditoras(Collection<String> listaNomeEditoras) {
+		this.listaNomeEditoras = listaNomeEditoras;
 	}
 }

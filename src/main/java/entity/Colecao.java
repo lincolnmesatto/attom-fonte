@@ -1,6 +1,8 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,10 +11,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Table(name = "tb_colecao")
 @Entity
+
+@NamedQueries({
+	@NamedQuery(name = "Colecao.obterPorTituloUsuario", query = "SELECT c FROM Colecao c WHERE c.titulo = :titulo AND c.usuario.id = :id")
+})
+
 public class Colecao implements Serializable {
 
 	private static final long serialVersionUID = 5965675303661427310L;
@@ -45,6 +55,15 @@ public class Colecao implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "cod_selo", nullable = true)
 	private Selo selo;
+	
+	@Transient
+	private String editoraSelecionada;
+	
+	@Transient
+	private Collection<Autor> autoresSelecionados;
+
+	@Transient
+	private Collection<Genero> generosSelecionados;
 	
 	public Integer getId() {
 		return id;
@@ -108,5 +127,33 @@ public class Colecao implements Serializable {
 
 	public void setSelo(Selo selo) {
 		this.selo = selo;
+	}
+
+	public String getEditoraSelecionada() {
+		return editoraSelecionada;
+	}
+
+	public void setEditoraSelecionada(String editoraSelecionada) {
+		this.editoraSelecionada = editoraSelecionada;
+	}
+
+	public Collection<Autor> getAutoresSelecionados() {
+		if(this.autoresSelecionados == null)
+			autoresSelecionados = new ArrayList<>();
+		return autoresSelecionados;
+	}
+
+	public void setAutoresSelecionados(Collection<Autor> autoresSelecionados) {
+		this.autoresSelecionados = autoresSelecionados;
+	}
+
+	public Collection<Genero> getGenerosSelecionados() {
+		if(this.generosSelecionados == null)
+			generosSelecionados = new ArrayList<>();
+		return generosSelecionados;
+	}
+
+	public void setGenerosSelecionados(Collection<Genero> generosSelecionados) {
+		this.generosSelecionados = generosSelecionados;
 	}
 }

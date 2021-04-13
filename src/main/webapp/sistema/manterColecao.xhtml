@@ -13,11 +13,50 @@
 	<ui:define name="content">
  		<div class="card">
    			 <h:form>
-			    <br/>
-				<p:commandButton value="Teste Incluir Coleção" styleClass="btn btn-danger"
-				 		 action="#{colecaoController.salvar()}" />
-				<p:commandButton value="Teste Incluir Coleção Pt2" styleClass="btn btn-danger"
-				 		 action="#{colecaoController.salvarPt2()}" />
+   			 	<p:growl id="growl-mensagem" showDetail="true" sticky="true" /> 
+   			 
+		        <p:inputText styleClass="titulo" placeholder="Título" value="#{colecaoController.colecao.titulo}" required="true"/>
+			    <br/><br/>
+			    
+			    <p:selectBooleanCheckbox value="#{colecaoController.colecao.completo}" itemLabel="Completo?"/>
+			    <br/><br/>
+			    
+				<p:inputNumber value="#{colecaoController.colecao.ultimoComprado}" decimalPlaces="0" modifyValueOnWheel="false" placeholder="Último Volume Comprado" />
+			    <br/><br/>
+			    
+				<p:inputNumber value="#{colecaoController.colecao.ultimoLido}" decimalPlaces="0" modifyValueOnWheel="false" placeholder="Último Volume Lido" />
+			    <br/><br/>
+			    
+			    <div>
+	                <p:outputLabel value="Editora" for="editora"/>
+	                <p:autoComplete id="editora" value="#{colecaoController.colecao.editoraSelecionada}"
+                            completeMethod="#{colecaoController.completeText}"  scrollHeight="250"/>
+            	</div>
+            	<br/><br/>
+
+				<h5>Autor(es)</h5>
+		        <p:autoComplete id="autores" multiple="true" value="#{colecaoController.colecao.autoresSelecionados}"
+		                        completeMethod="#{colecaoController.completeAutor}"
+		                        var="autor" itemLabel="#{autor.nome}" itemValue="#{autor}"
+		                        converter="#{autorConverter}" forceSelection="true" scrollHeight="250">
+		            <p:column>
+		                <h:outputText style="vertical-align: left; margin-left: .5rem" value="#{autor.nome}"/>
+		            </p:column>
+		        </p:autoComplete>
+            	<br/><br/>
+
+				<h5>Gênero(s)</h5>
+		        <p:autoComplete id="generos" multiple="true" value="#{colecaoController.colecao.generosSelecionados}"
+		                        completeMethod="#{colecaoController.completeGenero}"
+		                        var="genero" itemLabel="#{genero.descricao}" itemValue="#{genero}"
+		                        converter="#{generoConverter}" forceSelection="true" scrollHeight="250">
+		            <p:column>
+		                <h:outputText style="vertical-align: left; margin-left: .5rem" value="#{genero.descricao}"/>
+		            </p:column>
+		        </p:autoComplete>
+            	<br/><br/>
+            	
+				<p:commandButton value="Salvar" styleClass="btn btn-success" action="#{colecaoController.salvar()}" update="growl-mensagem" />
 		    </h:form>
 		 </div>       
  

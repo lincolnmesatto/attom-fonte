@@ -23,4 +23,15 @@ public class UsuarioRepository implements Serializable {
 			return null;
 		}
 	}
+
+	public Usuario obterUsuarioPorId(Integer id){
+		try {
+			Query query = Uteis.jpaEntityManager().createNamedQuery("Usuario.findById");
+			query.setParameter("id", id);
+			
+			return (Usuario)query.getSingleResult();
+		} catch (Exception e) {
+			return null;
+		}
+	}
 }

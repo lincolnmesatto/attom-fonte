@@ -19,6 +19,12 @@ public class ColecaoGeneroId implements Serializable {
 	@JoinColumn(name = "cod_genero", nullable = false)
 	private Genero genero;
 
+	
+	public ColecaoGeneroId(Colecao colecao, Genero genero) {
+		this.colecao = colecao;
+		this.genero = genero;
+	}
+
 	public Colecao getColecao() {
 		return colecao;
 	}
