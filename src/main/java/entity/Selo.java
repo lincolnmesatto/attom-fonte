@@ -9,17 +9,25 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Table(name = "tb_selo")
 @Entity
+
+@NamedQueries({
+	@NamedQuery(name = "Selo.listAll", query = "SELECT s FROM Selo s "),
+	@NamedQuery(name = "Selo.obterPorNome", query = "SELECT s FROM Selo s WHERE s.descricao = :descricao")
+})
+
 public class Selo implements Serializable {
 
 	private static final long serialVersionUID = -5545294113058381494L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "cod_genero")
+	@Column(name = "cod_selo")
 	private Integer id;
 	
 	@Column(name = "descricao", length = 45, nullable = false)

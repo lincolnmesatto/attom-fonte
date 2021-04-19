@@ -18,11 +18,13 @@ import entity.ColecaoGenero;
 import entity.ColecaoGeneroId;
 import entity.Editora;
 import entity.Genero;
+import entity.Selo;
 import entity.Usuario;
 import repository.AutorRepository;
 import repository.ColecaoRepository;
 import repository.EditoraRepository;
 import repository.GeneroRepository;
+import repository.SeloRepository;
 import repository.UsuarioRepository;
 import util.Uteis;
 
@@ -46,10 +48,15 @@ public class ColecaoController implements Serializable {
 
 	@Inject
 	private GeneroRepository generoRepository;
+
+	@Inject
+	private SeloRepository seloRepository;
 	
 	private Colecao colecao;
 	private Collection<Editora> listaEditoras;
+	private Collection<Selo> listaSelos;
 	private Collection<String> listaNomeEditoras;
+	private Collection<String> listaNomeSelos;
 	
 	public String iniciarProcesso() {
 		colecao = new Colecao();
@@ -58,7 +65,7 @@ public class ColecaoController implements Serializable {
 		return "manterColecao?faces-redirect=true";
 	}
 	
-    public Collection<String> completeText(String query) {
+    public Collection<String> completeEditora(String query) {
         String queryLowerCase = query.toLowerCase();
         listaNomeEditoras = new ArrayList<>();
         
@@ -67,6 +74,17 @@ public class ColecaoController implements Serializable {
 		}
 
         return listaNomeEditoras.stream().filter(t -> t.toLowerCase().startsWith(queryLowerCase)).collect(Collectors.toList());
+    }
+
+    public Collection<String> completeSelo(String query) {
+    	String queryLowerCase = query.toLowerCase();
+    	listaNomeSelos = new ArrayList<>();
+    	
+    	for (Selo selo : listaSelos) {
+    		listaNomeSelos.add(selo.getDescricao());
+    	}
+    	
+    	return listaNomeSelos.stream().filter(t -> t.toLowerCase().startsWith(queryLowerCase)).collect(Collectors.toList());
     }
     
     public Collection<Autor> completeAutor(String query) {
@@ -99,6 +117,15 @@ public class ColecaoController implements Serializable {
 				editoraRepository.salvar(editora);
 			}
 			c.setEditora(editora);
+			
+			if(c.getSeloSelecionado() != null) {
+				Selo selo = seloRepository.obterSeloPorNome(c.getSeloSelecionado());
+				if(selo == null) {
+					selo = new Selo(c.getSeloSelecionado(), editora);
+					seloRepository.salvar(selo);
+				}
+				c.setSelo(selo);
+			}	
 			
 			colecaoRepository.salvar(c);
 
@@ -176,5 +203,21 @@ public class ColecaoController implements Serializable {
 
 	public void setListaNomeEditoras(Collection<String> listaNomeEditoras) {
 		this.listaNomeEditoras = listaNomeEditoras;
+	}
+
+	public Collection<Selo> getListaSelos() {
+		return listaSelos;
+	}
+
+	public void setListaSelos(Collection<Selo> listaSelos) {
+		this.listaSelos = listaSelos;
+	}
+
+	public Collection<String> getListaNomeSelos() {
+		return listaNomeSelos;
+	}
+
+	public void setListaNomeSelos(Collection<String> listaNomeSelos) {
+		this.listaNomeSelos = listaNomeSelos;
 	}
 }

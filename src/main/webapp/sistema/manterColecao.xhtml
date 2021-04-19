@@ -30,7 +30,14 @@
 			    <div>
 	                <p:outputLabel value="Editora" for="editora"/>
 	                <p:autoComplete id="editora" value="#{colecaoController.colecao.editoraSelecionada}"
-                            completeMethod="#{colecaoController.completeText}"  scrollHeight="250"/>
+                            completeMethod="#{colecaoController.completeEditora}"  scrollHeight="250"/>
+            	</div>
+            	<br/><br/>
+
+			    <div>
+	                <p:outputLabel value="Selo" for="selo"/>
+	                <p:autoComplete id="selo" value="#{colecaoController.colecao.seloSelecionado}"
+                            completeMethod="#{colecaoController.completeSelo}"  scrollHeight="250"/>
             	</div>
             	<br/><br/>
 

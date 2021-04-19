@@ -65,6 +65,9 @@ public class Colecao implements Serializable {
 	@Transient
 	private Collection<Genero> generosSelecionados;
 	
+	@Transient
+	private String seloSelecionado;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -155,5 +158,13 @@ public class Colecao implements Serializable {
 
 	public void setGenerosSelecionados(Collection<Genero> generosSelecionados) {
 		this.generosSelecionados = generosSelecionados;
+	}
+
+	public String getSeloSelecionado() {
+		return seloSelecionado;
+	}
+
+	public void setSeloSelecionado(String seloSelecionado) {
+		this.seloSelecionado = seloSelecionado;
 	}
 }
