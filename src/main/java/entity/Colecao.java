@@ -72,7 +72,7 @@ public class Colecao implements Serializable {
 	private String autorModal;
 
 	@Transient
-	private String generoModal;
+	private String generoModal; 
 	
 	public Integer getId() {
 		return id;

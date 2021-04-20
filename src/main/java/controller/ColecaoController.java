@@ -52,7 +52,7 @@ public class ColecaoController implements Serializable {
 	private GeneroRepository generoRepository;
 
 	@Inject
-	private SeloRepository seloRepository;
+	private SeloRepository seloRepository; 
 	
 	private Colecao colecao;
 	private Collection<Editora> listaEditoras;
