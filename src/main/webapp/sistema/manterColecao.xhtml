@@ -11,7 +11,7 @@
 <ui:composition template="/template/layoutBase.xhtml">
  
 	<ui:define name="content">
- 		<div class="card">
+ 		<div class="card"> 
    			 <h:form>
    			 	<p:growl id="growl-mensagem" showDetail="true" sticky="true" /> 
    			 
@@ -50,6 +50,7 @@
 		                <h:outputText style="vertical-align: left; margin-left: .5rem" value="#{autor.nome}"/>
 		            </p:column>
 		        </p:autoComplete>
+		        <p:commandButton type="button" icon="fa fa-plus" onclick="PF('modalAddAutor').show()"/>
             	<br/><br/>
 
 				<h5>Gênero(s)</h5>
@@ -61,11 +62,40 @@
 		                <h:outputText style="vertical-align: left; margin-left: .5rem" value="#{genero.descricao}"/>
 		            </p:column>
 		        </p:autoComplete>
+		        <p:commandButton type="button" icon="fa fa-plus" onclick="PF('modalAddGenero').show()"/>
             	<br/><br/>
             	
 				<p:commandButton value="Salvar" styleClass="btn btn-success" action="#{colecaoController.salvar()}" update="growl-mensagem" />
 		    </h:form>
-		 </div>       
+		 </div>   
+		 
+		 <p:dialog header="Adicionar Autor" widgetVar="modalAddAutor" minHeight="40" width="350" showEffect="fade" modal="true">
+		 	<h:form>
+		 		<p:growl id="mensagem-autor" showDetail="true" sticky="true" />
+		 	
+				<p:outputLabel value="Nome do Autor" for="nomeModal"/>
+			    <p:inputText id="nomeModal" styleClass="nomeModal" placeholder="Nome" value="#{colecaoController.colecao.autorModal}" required="true" style="width: 100%">
+			    	<p:ajax event="blur" process="@this" />
+			    </p:inputText>
+			    <br/>
+			    
+			    <p:commandButton value="Adicionar" process="@form" styleClass="btn btn-success" action="#{colecaoController.salvarAutor()}" update="mensagem-autor @all"/>
+			</h:form>    
+		</p:dialog>
+		
+		<p:dialog header="Adicionar Gênero" widgetVar="modalAddGenero" minHeight="40" width="350" showEffect="fade" modal="true">
+		 	<h:form>
+		 		<p:growl id="mensagem-genero" showDetail="true" sticky="true" />
+		 	
+				<p:outputLabel value="Gênero" for="generoModal"/>
+			    <p:inputText id="generoModal" styleClass="generoModal" placeholder="Gênero" value="#{colecaoController.colecao.generoModal}" required="true" style="width: 100%">
+			    	<p:ajax event="blur" process="@this" />
+			    </p:inputText>
+			    <br/>
+			    
+			    <p:commandButton value="Adicionar" process="@form" styleClass="btn btn-success" action="#{colecaoController.salvarGenero()}" update="mensagem-genero @all"/>
+			</h:form>    
+		</p:dialog>  
  
 	</ui:define>
  

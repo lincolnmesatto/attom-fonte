@@ -10,6 +10,8 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.primefaces.PrimeFaces;
+
 import entity.Autor;
 import entity.Colecao;
 import entity.ColecaoAutor;
@@ -50,7 +52,7 @@ public class ColecaoController implements Serializable {
 	private GeneroRepository generoRepository;
 
 	@Inject
-	private SeloRepository seloRepository;
+	private SeloRepository seloRepository; 
 	
 	private Colecao colecao;
 	private Collection<Editora> listaEditoras;
@@ -61,6 +63,7 @@ public class ColecaoController implements Serializable {
 	public String iniciarProcesso() {
 		colecao = new Colecao();
 		listaEditoras = editoraRepository.listarEditoras();
+		listaSelos = seloRepository.listarSelos();
 		
 		return "manterColecao?faces-redirect=true";
 	}
@@ -173,6 +176,52 @@ public class ColecaoController implements Serializable {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 	
 		return (Integer)facesContext.getExternalContext().getSessionMap().get("idUsuarioAutenticado");
+	}
+	
+	public void salvarAutor() {
+		if(colecao.getAutorModal() != null) {
+			Autor autor = autorRepository.obterAutorPorNome(colecao.getAutorModal());
+			
+			if(autor == null) {
+				autor = new Autor();
+				autor.setNome(colecao.getAutorModal());
+			
+				autorRepository.salvar(autor);
+				
+				colecao.setAutorModal(null);
+				
+				PrimeFaces current = PrimeFaces.current();
+				current.executeScript("PF('modalAddAutor').hide();");
+			}else {
+				colecao.setAutorModal(null);
+				Uteis.mensagemAtencao("Autor já cadastrado!");
+			}
+		}else {
+			Uteis.mensagemAtencao("Nome do Autor não informado!");
+		}
+	}
+
+	public void salvarGenero() {
+		if(colecao.getGeneroModal() != null) {
+			Genero genero = generoRepository.obterGeneroPorDescricao(colecao.getGeneroModal());
+			
+			if(genero == null) {
+				genero = new Genero();
+				genero.setDescricao(colecao.getGeneroModal());
+				
+				generoRepository.salvar(genero);
+				
+				colecao.setGeneroModal(null);
+				
+				PrimeFaces current = PrimeFaces.current();
+				current.executeScript("PF('modalAddGenero').hide();");
+			}else {
+				colecao.setAutorModal(null);
+				Uteis.mensagemAtencao("Gênero já cadastrado!");
+			}
+		}else {
+			Uteis.mensagemAtencao("Gênero não informado!");
+		}
 	}
 
 	public Colecao getColecao() {

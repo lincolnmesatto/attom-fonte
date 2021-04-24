@@ -25,8 +25,8 @@ import javax.persistence.Transient;
 
 public class Colecao implements Serializable {
 
-	private static final long serialVersionUID = 5965675303661427310L;
-	
+	private static final long serialVersionUID = 5719715873793078938L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "cod_colecao")
@@ -67,6 +67,12 @@ public class Colecao implements Serializable {
 	
 	@Transient
 	private String seloSelecionado;
+	
+	@Transient
+	private String autorModal;
+
+	@Transient
+	private String generoModal; 
 	
 	public Integer getId() {
 		return id;
@@ -166,5 +172,21 @@ public class Colecao implements Serializable {
 
 	public void setSeloSelecionado(String seloSelecionado) {
 		this.seloSelecionado = seloSelecionado;
+	}
+
+	public String getAutorModal() {
+		return autorModal;
+	}
+
+	public void setAutorModal(String autorModal) {
+		this.autorModal = autorModal;
+	}
+
+	public String getGeneroModal() {
+		return generoModal;
+	}
+
+	public void setGeneroModal(String generoModal) {
+		this.generoModal = generoModal;
 	}
 }
