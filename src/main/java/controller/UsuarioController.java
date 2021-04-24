@@ -24,6 +24,8 @@ public class UsuarioController implements Serializable {
  
 	@Inject
 	private Usuario usuario;
+
+	private boolean verificaCadastro = false;
 	
 	public String logout(){
 		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
@@ -40,7 +42,8 @@ public class UsuarioController implements Serializable {
  
 			Uteis.mensagem("Favor informara senha!");
 			return null;
-		}else{	
+		}else{
+			usuario.setSenha(criarHash(usuario));
 			usuario = usuarioRepository.validaUsuario(usuario);
 			if(usuario!= null){
 				FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -54,6 +57,47 @@ public class UsuarioController implements Serializable {
 		}
  
 	}
+	public String cadastrarUsuario() {
+
+		Usuario u = usuarioRepository.validarLogin(usuario);
+		if(u != null){
+			Uteis.mensagemAtencao("Login já cadastrado!");
+			return null;
+		}
+		u = usuarioRepository.validarEmail(usuario);
+		if(u != null){
+			Uteis.mensagemAtencao("Email já cadastrado!");
+		}
+
+		u = usuario;
+		u.setSenha(criarHash(u));
+
+		usuarioRepository.cadastrarUsuario(u);
+
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		facesContext.getExternalContext().getSessionMap().put("idUsuarioAutenticado", u.getId());
+
+		return "sistema/home?faces-redirect=true";
+	}
+	public String criarHash(Usuario u){
+		try {
+			Integer soma = 0;
+			for (char c : u.getLogin().toCharArray()) {
+				soma += (int) c;
+			}
+
+			String senhaHash = u.getSenha();
+			for (int i = 0; i < soma; i++) {
+				senhaHash = Uteis.md5(senhaHash);
+			}
+
+				return senhaHash;}
+		catch (Exception e){
+			e.getStackTrace();
+		}
+		return null;
+	}
+
 	
 //	public Usuario getUsuarioSession(){
 //		FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -68,4 +112,13 @@ public class UsuarioController implements Serializable {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
+
+	public boolean isVerificaCadastro() {
+		return verificaCadastro;
+	}
+
+	public void setVerificaCadastro(boolean verificaCadastro) {
+		this.verificaCadastro = verificaCadastro;
+	}
 }
+

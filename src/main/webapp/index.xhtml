@@ -10,19 +10,23 @@
 	<h:head>
  
 		<h:outputStylesheet library="css" name="default.css"/>
- 
+
+
 	</h:head>
  
-	<h:body style="display:flex;">
+	<h:body class="headd" style="display:flex;">
  
 		<h:form style=" margin:auto;">
  
 		    <p:growl id="growl-mensagem" showDetail="true" sticky="true" /> 
  
-		    <p:panel id="panel-login-principal" 
+		    <p:panel id="headd"
 		    		 header="Login" 
-		    		 footer="Sistema de cadastro de pessoas" 
-		    		 style="width:400px;">
+		    		 footer="Cadastro de livros"
+		    		 style="width:400px;"
+					 rendered="#{!usuarioController.verificaCadastro}"
+
+			>
  
 	        	<h:panelGrid columns="2" cellpadding="10">
  
@@ -49,6 +53,38 @@
 	            </h:panelGrid>
  
 	    	</p:panel>
+
+			<p:panel id="cadastro"
+			header="Cadastrar"
+			style="width: 400px;"
+			rendered="#{usuarioController.verificaCadastro}">
+				<h:panelGrid columns="2" cellpadding="10">
+					<p:graphicImage url="/resources/imagens/logoAttom.jpg" style="width: 150px"/>
+					<h:panelGrid>
+						<p:outputLabel value="Nome"/>
+						<p:inputText id="inputTexte-cadastroNome"
+									 value="#{usuarioController.usuario.nome}"/>
+						<p:outputLabel value="Email"/>
+						<p:inputText id="inputTexte-cadastroEmail"
+									 value="#{usuarioController.usuario.email}"/>
+						<p:outputLabel value="Login"/>
+						<p:inputText id="inputTexte-cadastroLogin"
+									 value="#{usuarioController.usuario.login}"/>
+						<p:outputLabel value="Senha"/>
+						<p:password id="inputTexte-cadastroSenha"
+									 value="#{usuarioController.usuario.senha}"/>
+
+						<p:commandButton value="Criar Usuario"
+						id="commandButton-criarUsuario"
+						icon="ui-icon-plus"
+						action="#{usuarioController.cadastrarUsuario}"
+						update="growl-mensagem"
+						/>
+					</h:panelGrid>
+
+				</h:panelGrid>
+
+			</p:panel>
  
 		</h:form>
  

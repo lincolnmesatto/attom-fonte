@@ -5,6 +5,8 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigInteger;
+import java.security.MessageDigest;
 
 public class Uteis {
 	
@@ -32,7 +34,7 @@ public class Uteis {
  
 		FacesContext facesContext = FacesContext.getCurrentInstance();
  
-		facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atenção:", mensagem));
+		facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atenï¿½ï¿½o:", mensagem));
 	}
  
 	//MOSTRAR MENSAGEM
@@ -41,5 +43,11 @@ public class Uteis {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
  
 		facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "", mensagem));
+	}
+	public static String md5(String mensagem) throws Exception{
+		MessageDigest m = MessageDigest.getInstance("MD5");
+		m.update(mensagem.getBytes(),0,mensagem.length());
+
+		return new BigInteger(1, m.digest()).toString(16);
 	}
 }
