@@ -58,12 +58,12 @@ public class UsuarioController implements Serializable {
  
 	}
 	public String cadastrarUsuario() {
-
 		Usuario u = usuarioRepository.validarLogin(usuario);
 		if(u != null){
 			Uteis.mensagemAtencao("Login já cadastrado!");
 			return null;
 		}
+		
 		u = usuarioRepository.validarEmail(usuario);
 		if(u != null){
 			Uteis.mensagemAtencao("Email já cadastrado!");
@@ -79,6 +79,7 @@ public class UsuarioController implements Serializable {
 
 		return "sistema/home?faces-redirect=true";
 	}
+	
 	public String criarHash(Usuario u){
 		try {
 			Integer soma = 0;
@@ -91,8 +92,8 @@ public class UsuarioController implements Serializable {
 				senhaHash = Uteis.md5(senhaHash);
 			}
 
-				return senhaHash;}
-		catch (Exception e){
+			return senhaHash;
+		}catch (Exception e){
 			e.getStackTrace();
 		}
 		return null;

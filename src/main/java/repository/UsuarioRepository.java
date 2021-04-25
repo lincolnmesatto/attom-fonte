@@ -37,10 +37,10 @@ public class UsuarioRepository implements Serializable {
 			return null;
 		}
 	}
+	
 	public Usuario validarLogin(Usuario usuario){
 		try {
 			Query query = Uteis.jpaEntityManager().createNamedQuery("Usuario.findByLogin");
-
 
 			query.setParameter("login", usuario.getLogin());
 
@@ -50,10 +50,10 @@ public class UsuarioRepository implements Serializable {
 		}
 
 	}
+	
 	public Usuario validarEmail(Usuario usuario){
 		try {
 			Query query = Uteis.jpaEntityManager().createNamedQuery("Usuario.findByEmail");
-
 
 			query.setParameter("email", usuario.getEmail());
 
@@ -63,6 +63,7 @@ public class UsuarioRepository implements Serializable {
 		}
 
 	}
+	
 	public void cadastrarUsuario(Usuario usuario) {
 		try {
 			entityManager =  Uteis.jpaEntityManager();

@@ -8,10 +8,7 @@
 	xmlns:p="http://primefaces.org/ui">
  
 	<h:head>
- 
 		<h:outputStylesheet library="css" name="default.css"/>
-
-
 	</h:head>
  
 	<h:body class="headd" style="display:flex;">
@@ -24,9 +21,7 @@
 		    		 header="Login" 
 		    		 footer="Cadastro de livros"
 		    		 style="width:400px;"
-					 rendered="#{!usuarioController.verificaCadastro}"
-
-			>
+					 rendered="#{!usuarioController.verificaCadastro}">
  
 	        	<h:panelGrid columns="2" cellpadding="10">
  
@@ -55,9 +50,9 @@
 	    	</p:panel>
 
 			<p:panel id="cadastro"
-			header="Cadastrar"
-			style="width: 400px;"
-			rendered="#{usuarioController.verificaCadastro}">
+					 header="Cadastrar"
+					 style="width: 400px;"
+					 rendered="#{usuarioController.verificaCadastro}">
 				<h:panelGrid columns="2" cellpadding="10">
 					<p:graphicImage url="/resources/imagens/logoAttom.jpg" style="width: 150px"/>
 					<h:panelGrid>
@@ -75,10 +70,10 @@
 									 value="#{usuarioController.usuario.senha}"/>
 
 						<p:commandButton value="Criar Usuario"
-						id="commandButton-criarUsuario"
-						icon="ui-icon-plus"
-						action="#{usuarioController.cadastrarUsuario}"
-						update="growl-mensagem"
+							id="commandButton-criarUsuario"
+							icon="ui-icon-plus"
+							action="#{usuarioController.cadastrarUsuario}"
+							update="growl-mensagem"
 						/>
 					</h:panelGrid>
 
