@@ -99,6 +99,13 @@ public class UsuarioController implements Serializable {
 		return null;
 	}
 
+	public void linkHomeScreen(){
+
+		verificaCadastro = !verificaCadastro;
+
+	}
+
+
 	
 //	public Usuario getUsuarioSession(){
 //		FacesContext facesContext = FacesContext.getCurrentInstance();

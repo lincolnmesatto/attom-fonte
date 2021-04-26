@@ -13,16 +13,18 @@
  
 	<h:body class="headd" style="display:flex;">
  
-		<h:form style=" margin:auto;">
+		<h:form id="main-form" style=" margin:auto;">
  
 		    <p:growl id="growl-mensagem" showDetail="true" sticky="true" /> 
  
 		    <p:panel id="headd"
+
 		    		 header="Login" 
 		    		 footer="Cadastro de livros"
 		    		 style="width:400px;"
 					 rendered="#{!usuarioController.verificaCadastro}">
- 
+
+
 	        	<h:panelGrid columns="2" cellpadding="10">
  
 	            	<p:graphicImage url="/resources/imagens/locked.png" />
@@ -41,13 +43,18 @@
 	            				 id="commandButton-acessar"
 								 icon="ui-icon-gear"
 						 		 action="#{usuarioController.efetuarLogin}"
-						 		 update="growl-mensagem" />
+						 		 update="growl-mensagem"
+						/>
+
+						<p:commandLink value="CRIAR CADASTRO" update="main-form" action="#{usuarioController.linkHomeScreen}"/>
 
 	            	</h:panelGrid>
  
 	            </h:panelGrid>
- 
-	    	</p:panel>
+
+
+
+			</p:panel>
 
 			<p:panel id="cadastro"
 					 header="Cadastrar"
@@ -75,11 +82,14 @@
 							action="#{usuarioController.cadastrarUsuario}"
 							update="growl-mensagem"
 						/>
+						<p:commandLink value="Login" update="main-form" action="#{usuarioController.linkHomeScreen}"/>
+
 					</h:panelGrid>
 
 				</h:panelGrid>
 
 			</p:panel>
+
  
 		</h:form>
  
