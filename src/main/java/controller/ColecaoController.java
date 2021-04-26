@@ -60,10 +60,13 @@ public class ColecaoController implements Serializable {
 	private Collection<String> listaNomeEditoras;
 	private Collection<String> listaNomeSelos;
 	
-	public String iniciarProcesso() {
+	private boolean isVolumeUnico;
+	
+	public String iniciarProcesso(boolean volumeUnico) {
 		colecao = new Colecao();
 		listaEditoras = editoraRepository.listarEditoras();
 		listaSelos = seloRepository.listarSelos();
+		isVolumeUnico = volumeUnico;
 		
 		return "manterColecao?faces-redirect=true";
 	}
@@ -121,14 +124,16 @@ public class ColecaoController implements Serializable {
 			}
 			c.setEditora(editora);
 			
-			if(c.getSeloSelecionado() != null) {
+			if(c.getSeloSelecionado() != null && c.getSeloSelecionado() != "") {
 				Selo selo = seloRepository.obterSeloPorNome(c.getSeloSelecionado());
 				if(selo == null) {
 					selo = new Selo(c.getSeloSelecionado(), editora);
 					seloRepository.salvar(selo);
 				}
 				c.setSelo(selo);
-			}	
+			}
+			
+			c.setVolumeUnico(isVolumeUnico);
 			
 			colecaoRepository.salvar(c);
 
@@ -268,5 +273,13 @@ public class ColecaoController implements Serializable {
 
 	public void setListaNomeSelos(Collection<String> listaNomeSelos) {
 		this.listaNomeSelos = listaNomeSelos;
+	}
+
+	public boolean isVolumeUnico() {
+		return isVolumeUnico;
+	}
+
+	public void setVolumeUnico(boolean isVolumeUnico) {
+		this.isVolumeUnico = isVolumeUnico;
 	}
 }

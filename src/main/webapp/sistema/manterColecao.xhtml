@@ -18,14 +18,16 @@
 		        <p:inputText styleClass="titulo" placeholder="Título" value="#{colecaoController.colecao.titulo}" required="true"/>
 			    <br/><br/>
 			    
-			    <p:selectBooleanCheckbox value="#{colecaoController.colecao.completo}" itemLabel="Completo?"/>
+			    <p:selectBooleanCheckbox value="#{colecaoController.colecao.completo}" itemLabel="#{!colecaoController.volumeUnico ? 'Completo?' : 'Lido'}"/>
 			    <br/><br/>
 			    
-				<p:inputNumber value="#{colecaoController.colecao.ultimoComprado}" decimalPlaces="0" modifyValueOnWheel="false" placeholder="Último Volume Comprado" />
-			    <br/><br/>
-			    
-				<p:inputNumber value="#{colecaoController.colecao.ultimoLido}" decimalPlaces="0" modifyValueOnWheel="false" placeholder="Último Volume Lido" />
-			    <br/><br/>
+			    <h:panelGroup rendered="#{!colecaoController.volumeUnico}">
+					<p:inputNumber value="#{colecaoController.colecao.ultimoComprado}" decimalPlaces="0" modifyValueOnWheel="false" placeholder="Último Volume Comprado" />
+				    <br/><br/>
+				    
+					<p:inputNumber value="#{colecaoController.colecao.ultimoLido}" decimalPlaces="0" modifyValueOnWheel="false" placeholder="Último Volume Lido" />
+				    <br/><br/>
+				</h:panelGroup>    
 			    
 			    <div>
 	                <p:outputLabel value="Editora" for="editora"/>

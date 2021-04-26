@@ -44,6 +44,9 @@ public class Colecao implements Serializable {
 	@Column(name = "ultimo_comprado")
 	private Integer ultimoComprado;
 	
+	@Column(name = "isVolumeUnico")
+	private boolean volumeUnico;
+	
 	@ManyToOne
 	@JoinColumn(name = "cod_editora", nullable = false)
 	private Editora editora;
@@ -188,5 +191,13 @@ public class Colecao implements Serializable {
 
 	public void setGeneroModal(String generoModal) {
 		this.generoModal = generoModal;
+	}
+
+	public boolean isVolumeUnico() {
+		return volumeUnico;
+	}
+
+	public void setVolumeUnico(boolean volumeUnico) {
+		this.volumeUnico = volumeUnico;
 	}
 }
