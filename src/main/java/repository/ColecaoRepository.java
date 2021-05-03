@@ -1,6 +1,7 @@
 package repository;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -56,5 +57,21 @@ public class ColecaoRepository implements Serializable {
 		} catch (Exception e) {
 			return null;
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public Collection<Colecao> listarPorUsuario(Integer idUsuarioLogado) {
+		Query query = Uteis.jpaEntityManager().createNamedQuery("Colecao.listarPorUsuario");
+		query.setParameter("id", idUsuarioLogado);
+		
+		return (Collection<Colecao>)query.getResultList();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Collection<ColecaoAutor> listarPorAutoresPorColecao(Colecao colecao){
+		Query query = Uteis.jpaEntityManager().createNamedQuery("ColecaoAutor.listarPorColecao");
+		query.setParameter("id", colecao.getId());
+		
+		return (Collection<ColecaoAutor>)query.getResultList();
 	}
 }

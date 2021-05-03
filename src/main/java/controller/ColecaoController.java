@@ -61,6 +61,8 @@ public class ColecaoController implements Serializable {
 	private Collection<String> listaNomeSelos;
 	
 	private boolean isVolumeUnico;
+	private Collection<Colecao> listaColecoes;
+	private Colecao colecaoSelecionada;
 	
 	public String iniciarProcesso(boolean volumeUnico) {
 		colecao = new Colecao();
@@ -281,5 +283,27 @@ public class ColecaoController implements Serializable {
 
 	public void setVolumeUnico(boolean isVolumeUnico) {
 		this.isVolumeUnico = isVolumeUnico;
+	}
+
+	public Collection<Colecao> getListaColecoes() {
+		if(listaColecoes == null) {
+			listaColecoes = colecaoRepository.listarPorUsuario(getIdUsuarioLogado());
+			for (Colecao colecao : listaColecoes) {
+				colecao.setListaColecaoAutor(colecaoRepository.listarPorAutoresPorColecao(colecao));
+			}
+		}	
+		return listaColecoes;
+	}
+
+	public void setListaColecoes(Collection<Colecao> listaColecoes) {
+		this.listaColecoes = listaColecoes;
+	}
+
+	public Colecao getColecaoSelecionada() {
+		return colecaoSelecionada;
+	}
+
+	public void setColecaoSelecionada(Colecao colecaoSelecionada) {
+		this.colecaoSelecionada = colecaoSelecionada;
 	}
 }

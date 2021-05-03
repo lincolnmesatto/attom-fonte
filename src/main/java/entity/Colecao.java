@@ -20,7 +20,8 @@ import javax.persistence.Transient;
 @Entity
 
 @NamedQueries({
-	@NamedQuery(name = "Colecao.obterPorTituloUsuario", query = "SELECT c FROM Colecao c WHERE c.titulo = :titulo AND c.usuario.id = :id")
+	@NamedQuery(name = "Colecao.obterPorTituloUsuario", query = "SELECT c FROM Colecao c WHERE c.titulo = :titulo AND c.usuario.id = :id"),
+	@NamedQuery(name = "Colecao.listarPorUsuario", query = "SELECT c FROM Colecao c WHERE c.usuario.id = :id")
 })
 
 public class Colecao implements Serializable {
@@ -76,6 +77,12 @@ public class Colecao implements Serializable {
 
 	@Transient
 	private String generoModal; 
+	
+	@Transient
+	private String autoresFormatado;
+	
+	@Transient
+	private Collection<ColecaoAutor> listaColecaoAutor;
 	
 	public Integer getId() {
 		return id;
@@ -199,5 +206,29 @@ public class Colecao implements Serializable {
 
 	public void setVolumeUnico(boolean volumeUnico) {
 		this.volumeUnico = volumeUnico;
+	}
+
+	public String getAutoresFormatado() {
+		int cont = 0;
+		for (ColecaoAutor ca : this.listaColecaoAutor) {
+			if(cont == 0)
+				autoresFormatado = ca.getId().getAutor().getNome();
+			else
+				autoresFormatado += ";"+ca.getId().getAutor().getNome();
+			cont++;
+		}
+		return autoresFormatado;
+	}
+
+	public void setAutoresFormatado(String autoresFormatado) {
+		this.autoresFormatado = autoresFormatado;
+	}
+
+	public Collection<ColecaoAutor> getListaColecaoAutor() {
+		return listaColecaoAutor;
+	}
+
+	public void setListaColecaoAutor(Collection<ColecaoAutor> listaColecaoAutor) {
+		this.listaColecaoAutor = listaColecaoAutor;
 	}
 }
