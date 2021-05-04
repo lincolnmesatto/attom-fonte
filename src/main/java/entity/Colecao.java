@@ -231,4 +231,73 @@ public class Colecao implements Serializable {
 	public void setListaColecaoAutor(Collection<ColecaoAutor> listaColecaoAutor) {
 		this.listaColecaoAutor = listaColecaoAutor;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (completo ? 1231 : 1237);
+		result = prime * result + ((editora == null) ? 0 : editora.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((selo == null) ? 0 : selo.hashCode());
+		result = prime * result + ((titulo == null) ? 0 : titulo.hashCode());
+		result = prime * result + ((ultimoComprado == null) ? 0 : ultimoComprado.hashCode());
+		result = prime * result + ((ultimoLido == null) ? 0 : ultimoLido.hashCode());
+		result = prime * result + ((usuario == null) ? 0 : usuario.hashCode());
+		result = prime * result + (volumeUnico ? 1231 : 1237);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Colecao other = (Colecao) obj;
+		if (completo != other.completo)
+			return false;
+		if (editora == null) {
+			if (other.editora != null)
+				return false;
+		} else if (!editora.equals(other.editora))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (selo == null) {
+			if (other.selo != null)
+				return false;
+		} else if (!selo.equals(other.selo))
+			return false;
+		if (titulo == null) {
+			if (other.titulo != null)
+				return false;
+		} else if (!titulo.equals(other.titulo))
+			return false;
+		if (ultimoComprado == null) {
+			if (other.ultimoComprado != null)
+				return false;
+		} else if (!ultimoComprado.equals(other.ultimoComprado))
+			return false;
+		if (ultimoLido == null) {
+			if (other.ultimoLido != null)
+				return false;
+		} else if (!ultimoLido.equals(other.ultimoLido))
+			return false;
+		if (usuario == null) {
+			if (other.usuario != null)
+				return false;
+		} else if (!usuario.equals(other.usuario))
+			return false;
+		if (volumeUnico != other.volumeUnico)
+			return false;
+		return true;
+	}
+	
+	
 }
