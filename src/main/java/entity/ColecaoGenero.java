@@ -2,56 +2,71 @@ package entity;
 
 import java.io.Serializable;
 
-import javax.persistence.EmbeddedId;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Table(name = "tb_colecao_genero")
 @Entity
 public class ColecaoGenero implements Serializable {
 	private static final long serialVersionUID = -3034939477151035891L;
-
-	@EmbeddedId
-	private ColecaoGeneroId id;
 	
-	public ColecaoGenero() {}
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "cod_colecao_genero")
+	private Integer id;
 
-	public ColecaoGenero(ColecaoGeneroId id) {
+	@ManyToOne
+	@JoinColumn(name = "cod_colecao", nullable = false)
+	private Colecao colecao;
+
+	@ManyToOne
+	@JoinColumn(name = "cod_genero", nullable = false)
+	private Genero genero;
+
+	public ColecaoGenero(Integer id, Colecao colecao, Genero genero) {
+		super();
 		this.id = id;
+		this.colecao = colecao;
+		this.genero = genero;
 	}
 
-	public ColecaoGeneroId getId() {
+	public ColecaoGenero(Colecao colecao, Genero genero) {
+		super();
+		this.colecao = colecao;
+		this.genero = genero;
+	}
+
+	public ColecaoGenero() {
+	}
+
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(ColecaoGeneroId id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
+	public Colecao getColecao() {
+		return colecao;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ColecaoGenero other = (ColecaoGenero) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
+	public void setColecao(Colecao colecao) {
+		this.colecao = colecao;
 	}
-	
-	
+
+	public Genero getGenero() {
+		return genero;
+	}
+
+	public void setGenero(Genero genero) {
+		this.genero = genero;
+	}
+
 }

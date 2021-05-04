@@ -212,9 +212,9 @@ public class Colecao implements Serializable {
 		int cont = 0;
 		for (ColecaoAutor ca : this.listaColecaoAutor) {
 			if(cont == 0)
-				autoresFormatado = ca.getId().getAutor().getNome();
+				autoresFormatado = ca.getAutor().getNome();
 			else
-				autoresFormatado += ";"+ca.getId().getAutor().getNome();
+				autoresFormatado += ";"+ca.getAutor().getNome();
 			cont++;
 		}
 		return autoresFormatado;
@@ -298,6 +298,4 @@ public class Colecao implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
 }

@@ -13,22 +13,22 @@
 	<ui:define name="content">
  		<div class="card">
    			 <h:form>
-<!-- 		        <p:dataTable id="colecao" var="colecao" value="#{colecaoController.listaColecoes}" rowKey="#{colecao.id}" -->
-<!-- 		                     selection="#{colecaoController.colecaoSelecionada}" selectionMode="single"> -->
-<!-- 		            <f:facet name="header"> -->
-<!-- 		                Suas Coleções -->
-<!-- 		            </f:facet> -->
+		        <p:dataTable id="colecao" var="colecao" value="#{colecaoController.listaColecoes}" rowKey="#{colecao.id}"
+		                     selection="#{colecaoController.colecaoSelecionada}" selectionMode="single">
+		            <f:facet name="header">
+		                Suas Coleções
+		            </f:facet>
 		
-<!-- 		            <p:column headerText="Titulo"> -->
-<!-- 		                <h:outputText value="#{colecao.titulo}" /> -->
-<!-- 		            </p:column> -->
-<!-- 		            <p:column headerText="Autor"> -->
-<!-- 		                <h:outputText value="#{colecao.autoresFormatado}" /> -->
-<!-- 		            </p:column> -->
-<!-- 		            <p:column headerText="Editora"> -->
-<!-- 		                <h:outputText value="#{colecao.editora.nome}" /> -->
-<!-- 		            </p:column> -->
-<!-- 		        </p:dataTable> -->
+		            <p:column headerText="Titulo">
+		                <h:outputText value="#{colecao.titulo}" />
+		            </p:column>
+		            <p:column headerText="Autor">
+		                <h:outputText value="#{colecao.autoresFormatado}" />
+		            </p:column>
+		            <p:column headerText="Editora">
+		                <h:outputText value="#{colecao.editora.nome}" />
+		            </p:column>
+		        </p:dataTable>
 		    </h:form>
 		 </div>       
  

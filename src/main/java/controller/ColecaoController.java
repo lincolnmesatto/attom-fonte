@@ -22,9 +22,7 @@ import org.primefaces.model.file.UploadedFile;
 import entity.Autor;
 import entity.Colecao;
 import entity.ColecaoAutor;
-import entity.ColecaoAutorId;
 import entity.ColecaoGenero;
-import entity.ColecaoGeneroId;
 import entity.Editora;
 import entity.Genero;
 import entity.Selo;
@@ -159,20 +157,12 @@ public class ColecaoController implements Serializable {
 	public void salvarRelacionamentos(Colecao c) {
 		
 		for (Autor autor : c.getAutoresSelecionados()) {
-			ColecaoAutorId cai = new ColecaoAutorId(colecao, autor); 
-
-			ColecaoAutor colecaoAutor = new ColecaoAutor();
-			colecaoAutor.setId(cai);
-			
+			ColecaoAutor colecaoAutor = new ColecaoAutor(c, autor);
 			colecaoRepository.salvarColecaoAutor(colecaoAutor);
 		}
 
 		for (Genero genero : c.getGenerosSelecionados()) {
-			ColecaoGeneroId cgi = new ColecaoGeneroId(colecao, genero); 
-			
-			ColecaoGenero colecaoGenero = new ColecaoGenero();
-			colecaoGenero.setId(cgi);
-			
+			ColecaoGenero colecaoGenero = new ColecaoGenero(c, genero);
 			colecaoRepository.salvarColecaoGenero(colecaoGenero);
 		}
 	}
