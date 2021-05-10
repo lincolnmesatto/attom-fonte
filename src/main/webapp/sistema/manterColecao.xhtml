@@ -9,24 +9,25 @@
  
  
 <ui:composition template="/template/layoutBase.xhtml">
- 
+
+
 	<ui:define name="content">
- 		<div class="card"> 
+ 		<div class="card" style="margin-left: 25%; width: 30%; padding: 30px; margin-bottom: 500px" >
    			 <h:form>
    			 	<p:growl id="growl-mensagem" showDetail="true" sticky="true" /> 
-   			 
+				  <h3 class="card-title">Cadastre seu livro!</h3>
 		        <p:inputText styleClass="titulo" placeholder="Título" value="#{colecaoController.colecao.titulo}" required="true"/>
-			    <br/><br/>
+			    <br/>
 			    
 			    <p:selectBooleanCheckbox value="#{colecaoController.colecao.completo}" itemLabel="#{!colecaoController.volumeUnico ? 'Completo?' : 'Lido'}"/>
-			    <br/><br/>
+			    <br/>
 			    
 			    <h:panelGroup rendered="#{!colecaoController.volumeUnico}">
 					<p:inputNumber value="#{colecaoController.colecao.ultimoComprado}" decimalPlaces="0" modifyValueOnWheel="false" placeholder="Último Volume Comprado" />
-				    <br/><br/>
+				    <br/>
 				    
 					<p:inputNumber value="#{colecaoController.colecao.ultimoLido}" decimalPlaces="0" modifyValueOnWheel="false" placeholder="Último Volume Lido" />
-				    <br/><br/>
+				    <br/>
 				</h:panelGroup>    
 			    
 			    <div>
@@ -34,14 +35,14 @@
 	                <p:autoComplete id="editora" value="#{colecaoController.colecao.editoraSelecionada}"
                             completeMethod="#{colecaoController.completeEditora}"  scrollHeight="250"/>
             	</div>
-            	<br/><br/>
+            	<br/>
 
 			    <div>
 	                <p:outputLabel value="Selo" for="selo"/>
 	                <p:autoComplete id="selo" value="#{colecaoController.colecao.seloSelecionado}"
                             completeMethod="#{colecaoController.completeSelo}"  scrollHeight="250"/>
             	</div>
-            	<br/><br/>
+            	<br/>
 
 				<h5>Autor(es)</h5>
 		        <p:autoComplete id="autores" multiple="true" value="#{colecaoController.colecao.autoresSelecionados}"
@@ -53,7 +54,7 @@
 		            </p:column>
 		        </p:autoComplete>
 		        <p:commandButton type="button" icon="fa fa-plus" onclick="PF('modalAddAutor').show()"/>
-            	<br/><br/>
+            	<br/>
 
 				<h5>Gênero(s)</h5>
 		        <p:autoComplete id="generos" multiple="true" value="#{colecaoController.colecao.generosSelecionados}"
@@ -65,7 +66,7 @@
 		            </p:column>
 		        </p:autoComplete>
 		        <p:commandButton type="button" icon="fa fa-plus" onclick="PF('modalAddGenero').show()"/>
-            	<br/><br/>
+
 
 
 
@@ -107,7 +108,7 @@
 <!-- 		        </p:outputPanel> -->
 
 
-            	<br/><br/>
+
             	
 				<p:commandButton value="Salvar" styleClass="btn btn-success" action="#{colecaoController.salvar()}" update="growl-mensagem" />
 		    </h:form>
