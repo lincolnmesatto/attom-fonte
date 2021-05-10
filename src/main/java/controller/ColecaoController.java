@@ -73,7 +73,7 @@ public class ColecaoController implements Serializable {
 		colecao = new Colecao();
 		listaEditoras = editoraRepository.listarEditoras();
 		listaSelos = seloRepository.listarSelos();
-		isVolumeUnico = volumeUnico;
+		isVolumeUnico = volumeUnico; 
 		
 		return "manterColecao?faces-redirect=true";
 	}
