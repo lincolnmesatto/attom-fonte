@@ -9,52 +9,54 @@
  
 	<h:head>
 		<h:outputStylesheet library="css" name="default.css"/>
+		<link rel="stylesheet" href="resources/font-awesome/css/font-awesome.min.css"/>
+		<link rel="stylesheet" href="resources/bootstrap/css/bootstrap.min.css"/>
 	</h:head>
  
-	<h:body class="headd" style="display:flex;">
+	<h:body class="texture" style="display:flex;">
  
 		<h:form id="main-form" style=" margin:auto;">
  
-		    <p:growl id="growl-mensagem" showDetail="true" sticky="true" /> 
- 
-		    <p:panel id="headd"
+		    <p:growl id="growl-mensagem" showDetail="true" sticky="true" />
 
-		    		 header="Login" 
-		    		 footer="Cadastro de livros"
-		    		 style="width:400px;"
+			<div class="row">
+		    <p:panel id="headd"
+		    		 header="Login"
+		    		 footer="Entre agora e conheça o mais inovador sistema de coleção de livros e mangás!"
+		    		 style="width:1000px; height: 500px;"
 					 rendered="#{!usuarioController.verificaCadastro}">
 
-
-	        	<h:panelGrid columns="2" cellpadding="10">
- 
-	            	<p:graphicImage url="/resources/imagens/locked.png" />
- 
-	            	<h:panelGrid columns="2" cellpadding="5">
-	            		<p:outputLabel value="Login"/>
-	            		<p:inputText id="inputText-login" 
+	        	<h:panelGrid>
+	            	<p:graphicImage url="/resources/imagens/logoAttom.jpg" style="width: 250px; margin-left: 600px; margin-top: 30px; position: fixed" />
+	            	<h:panelGrid columns="2" cellpadding="5" style="margin-top: 70px">
+	            		<p:outputLabel styleClass="main-font"  value="Login"/>
+	            		<p:inputText id="inputText-login" styleClass="main-form"
 	            			     value="#{usuarioController.usuario.login}"/>
- 
-	            		<p:outputLabel value="Senha"/>
+
+	            		<p:outputLabel styleClass="main-font" value="Senha"/>
 	            		<p:password id="password-usuario" 
 	            			    value="#{usuarioController.usuario.senha}"/>
- 
 	            		&nbsp;
 	            		<p:commandButton value="Acessar" 
 	            				 id="commandButton-acessar"
-								 icon="ui-icon-gear"
+								 icon="fa fa-fw fa-check"
 						 		 action="#{usuarioController.efetuarLogin}"
 						 		 update="growl-mensagem"
 						/>
 
-						<p:commandLink value="CRIAR CADASTRO" update="main-form" action="#{usuarioController.linkHomeScreen}"/>
-
+						<table>
+							<tr>
+								<p:commandLink styleClass="main-font"  value="Cadastrar" update="main-form" action="#{usuarioController.linkHomeScreen}"/>
+							</tr>
+							<tr>
+								<td>Não tem uma conta ainda?</td>
+							</tr>
+						</table>
 	            	</h:panelGrid>
- 
 	            </h:panelGrid>
-
-
-
 			</p:panel>
+
+			</div>
 
 			<p:panel id="cadastro"
 					 header="Cadastrar"
