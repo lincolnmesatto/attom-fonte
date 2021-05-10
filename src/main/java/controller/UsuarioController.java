@@ -51,7 +51,7 @@ public class UsuarioController implements Serializable {
  
 				return "sistema/home?faces-redirect=true";
 			}else{
-				Uteis.mensagem("N„o foi possÌvel efetuar o login com esse usu·rio e senha!");
+				Uteis.mensagem("N√£o foi poss√≠vel efetuar o login com esse usu√°rio e senha!");
 				return null;
 			}
 		}
@@ -60,13 +60,13 @@ public class UsuarioController implements Serializable {
 	public String cadastrarUsuario() {
 		Usuario u = usuarioRepository.validarLogin(usuario);
 		if(u != null){
-			Uteis.mensagemAtencao("Login j· cadastrado!");
+			Uteis.mensagemAtencao("Login j√° cadastrado!");
 			return null;
 		}
 		
 		u = usuarioRepository.validarEmail(usuario);
 		if(u != null){
-			Uteis.mensagemAtencao("Email j· cadastrado!");
+			Uteis.mensagemAtencao("Email j√° cadastrado!");
 		}
 
 		u = usuario;
