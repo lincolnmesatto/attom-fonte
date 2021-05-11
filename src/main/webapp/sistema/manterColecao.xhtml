@@ -12,33 +12,33 @@
 
 
 	<ui:define name="content">
- 		<div class="card" style="margin-left: 25%; width: 30%; padding: 30px; margin-bottom: 500px" >
+ 		<div class="card" style="margin-left: 15%; width: 30%; padding: 50px; margin-bottom: 500px; width: 75%; position: absolute" >
    			 <h:form>
    			 	<p:growl id="growl-mensagem" showDetail="true" sticky="true" /> 
 				  <h3 class="card-title">Cadastre seu livro!</h3>
-		        <p:inputText styleClass="titulo" placeholder="Título" value="#{colecaoController.colecao.titulo}" required="true"/>
-			    <br/>
+		        <p:inputText styleClass="titulo" placeholder="Título" style="margin: 10px" value="#{colecaoController.colecao.titulo}" required="true"/>
+
 			    
-			    <p:selectBooleanCheckbox value="#{colecaoController.colecao.completo}" itemLabel="#{!colecaoController.volumeUnico ? 'Completo?' : 'Lido'}"/>
-			    <br/>
+			    <p:selectBooleanCheckbox style="margin: 10px" value="#{colecaoController.colecao.completo}" itemLabel="#{!colecaoController.volumeUnico ? 'Coleção completa?' : 'Lido'}"/>
+
 			    
 			    <h:panelGroup rendered="#{!colecaoController.volumeUnico}">
-					<p:inputNumber value="#{colecaoController.colecao.ultimoComprado}" decimalPlaces="0" modifyValueOnWheel="false" placeholder="Último Volume Comprado" />
-				    <br/>
+					<p:inputNumber style="margin: 10px; width: 40px" value="#{colecaoController.colecao.ultimoComprado}" decimalPlaces="0" modifyValueOnWheel="false" placeholder="Último volume obtido" />
+
 				    
-					<p:inputNumber value="#{colecaoController.colecao.ultimoLido}" decimalPlaces="0" modifyValueOnWheel="false" placeholder="Último Volume Lido" />
-				    <br/>
+					<p:inputNumber style="margin: 10px"  value="#{colecaoController.colecao.ultimoLido}" decimalPlaces="0" modifyValueOnWheel="false" placeholder="Último volume lido" />
+
 				</h:panelGroup>    
 			    
 			    <div>
-	                <p:outputLabel value="Editora" for="editora"/>
-	                <p:autoComplete id="editora" value="#{colecaoController.colecao.editoraSelecionada}"
+	                <p:outputLabel style="margin: 15px" value="Editora" for="editora"/>
+	                <p:autoComplete id="editora" style="margin: 10px; margin-top: 35px" value="#{colecaoController.colecao.editoraSelecionada}"
                             completeMethod="#{colecaoController.completeEditora}"  scrollHeight="250"/>
             	</div>
             	<br/>
 
 			    <div>
-	                <p:outputLabel value="Selo" for="selo"/>
+	                <p:outputLabel value="Selo" for="selo" style="margin: 15px; margin-left: 43px"/>
 	                <p:autoComplete id="selo" value="#{colecaoController.colecao.seloSelecionado}"
                             completeMethod="#{colecaoController.completeSelo}"  scrollHeight="250"/>
             	</div>
@@ -53,7 +53,7 @@
 		                <h:outputText style="vertical-align: left; margin-left: .5rem" value="#{autor.nome}"/>
 		            </p:column>
 		        </p:autoComplete>
-		        <p:commandButton type="button" icon="fa fa-plus" onclick="PF('modalAddAutor').show()"/>
+		        <p:commandButton style="margin-bottom: 10px; margin-left: 15px; position: absolute" type="button" icon="fa fa-plus" onclick="PF('modalAddAutor').show()"/>
             	<br/>
 
 				<h5>Gênero(s)</h5>
@@ -65,7 +65,7 @@
 		                <h:outputText style="vertical-align: left; margin-left: .5rem" value="#{genero.descricao}"/>
 		            </p:column>
 		        </p:autoComplete>
-		        <p:commandButton type="button" icon="fa fa-plus" onclick="PF('modalAddGenero').show()"/>
+		        <p:commandButton  style="margin-bottom: 10px; margin-left: 15px; position: absolute" type="button" icon="fa fa-plus" onclick="PF('modalAddGenero').show()"/>
 
 
 
@@ -109,9 +109,11 @@
 
 
 
-            	
-				<p:commandButton value="Salvar" styleClass="btn btn-success" action="#{colecaoController.salvar()}" update="growl-mensagem" />
-		    </h:form>
+				<p:card style="width: 27%; margin-top: 15px">
+				<p:commandButton value="Salvar"  style="width: 100%" styleClass="btn btn-success" action="#{colecaoController.salvar()}" update="growl-mensagem" />
+
+				</p:card>
+			 </h:form>
 		 </div>   
 		 
 		 <p:dialog header="Adicionar Autor" widgetVar="modalAddAutor" minHeight="40" width="350" showEffect="fade" modal="true">
