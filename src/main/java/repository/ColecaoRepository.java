@@ -27,6 +27,46 @@ public class ColecaoRepository implements Serializable {
 		}	
 	}
 	
+	public void alterar(Colecao colecao) {
+		try {
+			entityManager =  Uteis.jpaEntityManager();
+			
+			entityManager.merge(colecao);
+		}catch (Exception e) {
+			e.getStackTrace();
+		}	
+	}
+	
+	public void deletar(Colecao colecao) {
+		try {
+			entityManager =  Uteis.jpaEntityManager();
+			
+			entityManager.remove(colecao);
+		}catch (Exception e) {
+			e.getStackTrace();
+		}	
+	}
+	
+	public void deletar(ColecaoAutor colecaoAutor) {
+		try {
+			entityManager =  Uteis.jpaEntityManager();
+			
+			entityManager.remove(colecaoAutor);
+		}catch (Exception e) {
+			e.getStackTrace();
+		}	
+	}
+	
+	public void deletar(ColecaoGenero colecaoGenero) {
+		try {
+			entityManager =  Uteis.jpaEntityManager();
+			
+			entityManager.remove(colecaoGenero);
+		}catch (Exception e) {
+			e.getStackTrace();
+		}	
+	}
+	
 	public void salvarColecaoAutor(ColecaoAutor colecaoAutor) {
 		try {
 			entityManager =  Uteis.jpaEntityManager();
@@ -73,5 +113,24 @@ public class ColecaoRepository implements Serializable {
 		query.setParameter("id", colecao.getId());
 		
 		return (Collection<ColecaoAutor>)query.getResultList();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Collection<ColecaoGenero> listarPorGenerosPorColecao(Colecao colecao){
+		Query query = Uteis.jpaEntityManager().createNamedQuery("ColecaoGenero.listarPorColecao");
+		query.setParameter("id", colecao.getId());
+		
+		return (Collection<ColecaoGenero>)query.getResultList();
+	}
+	
+	public Colecao obterColecaoPorId(Integer id){
+		try {
+			Query query = Uteis.jpaEntityManager().createNamedQuery("Colecao.obterPorId");
+			query.setParameter("id", id);
+			
+			return (Colecao)query.getSingleResult();
+		} catch (Exception e) {
+			return null;
+		}
 	}
 }

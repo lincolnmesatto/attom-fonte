@@ -1,23 +1,16 @@
 package controller;
 
-import java.io.ByteArrayInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.primefaces.PrimeFaces;
-import org.primefaces.event.FileUploadEvent;
-import org.primefaces.model.CroppedImage;
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
-import org.primefaces.model.file.UploadedFile;
 
 import entity.Autor;
 import entity.Colecao;
@@ -69,13 +62,46 @@ public class ColecaoController implements Serializable {
 	private Collection<Colecao> listaColecoes;
 	private Colecao colecaoSelecionada;
 	
+	private boolean isExibir;
+	
 	public String iniciarProcesso(boolean volumeUnico) {
 		colecao = new Colecao();
-		listaEditoras = editoraRepository.listarEditoras();
-		listaSelos = seloRepository.listarSelos();
+		carregarListas();
 		isVolumeUnico = volumeUnico;
 		
 		return "manterColecao?faces-redirect=true";
+	}
+	
+	public String iniciarEditar(Integer id, Boolean exibir) {
+		isExibir = exibir;
+		colecao = colecaoRepository.obterColecaoPorId(id);
+		carregarListas();
+		isVolumeUnico = colecao.isVolumeUnico();
+		
+		colecao.setEditoraSelecionada(colecao.getEditora().getNome());
+		colecao.setSeloSelecionado(colecao.getSelo().getDescricao());
+		
+		Collection<ColecaoAutor> ca = colecaoRepository.listarPorAutoresPorColecao(colecao);
+		Collection<ColecaoGenero> cg = colecaoRepository.listarPorGenerosPorColecao(colecao);
+		
+		for (ColecaoGenero colecaoGenero : cg) {
+			colecao.getGenerosSelecionados().add(colecaoGenero.getGenero());
+		}
+		
+		for (ColecaoAutor colecaoAutor : ca) {
+			colecao.getAutoresSelecionados().add(colecaoAutor.getAutor());
+		}
+
+		return "manterColecao?faces-redirect=true";
+	}
+	
+	public String iniciarProcessoHome() {
+		return "home?faces-redirect=true";
+	}
+	
+	public void carregarListas() {
+		listaEditoras = editoraRepository.listarEditoras();
+		listaSelos = seloRepository.listarSelos();
 	}
 	
     public Collection<String> completeEditora(String query) {
@@ -119,10 +145,12 @@ public class ColecaoController implements Serializable {
 			Usuario usuario = usuarioRepository.obterUsuarioPorId(getIdUsuarioLogado());
 			c.setUsuario(usuario);
 			
-			if(!validaColecao()) {
-				Uteis.mensagemAtencao("Coleção já cadastrada!");
-				return null;
-			}
+			if(c.getId() == null) {
+				if(!validaColecao()) {
+					Uteis.mensagemAtencao("Coleção já cadastrada!");
+					return null;
+				}
+			}	
 				
 			Editora editora = editoraRepository.obterEditoraPorNome(c.getEditoraSelecionada());
 			if(editora == null) {
@@ -142,7 +170,10 @@ public class ColecaoController implements Serializable {
 			
 			c.setVolumeUnico(isVolumeUnico);
 			
-			colecaoRepository.salvar(c);
+			if(colecao.getId()!=null)
+				colecaoRepository.alterar(c);
+			else
+				colecaoRepository.salvar(c);
 
 			salvarRelacionamentos(c);
 			
@@ -156,14 +187,35 @@ public class ColecaoController implements Serializable {
 
 	public void salvarRelacionamentos(Colecao c) {
 		
+		Collection<ColecaoAutor> listaColecaoAutor = colecaoRepository.listarPorAutoresPorColecao(c);
+		Collection<ColecaoGenero> listaColecaoGenero = colecaoRepository.listarPorGenerosPorColecao(c);
+		
 		for (Autor autor : c.getAutoresSelecionados()) {
 			ColecaoAutor colecaoAutor = new ColecaoAutor(c, autor);
-			colecaoRepository.salvarColecaoAutor(colecaoAutor);
+			boolean salvar = true;
+			for (ColecaoAutor ca : listaColecaoAutor) {
+				if(ca.getAutor().equals(autor)) {
+					salvar = false;
+					break;
+				}	
+			}
+			
+			if(salvar)
+				colecaoRepository.salvarColecaoAutor(colecaoAutor);
 		}
 
 		for (Genero genero : c.getGenerosSelecionados()) {
 			ColecaoGenero colecaoGenero = new ColecaoGenero(c, genero);
-			colecaoRepository.salvarColecaoGenero(colecaoGenero);
+			boolean salvar = true;
+			for (ColecaoGenero cg : listaColecaoGenero) {
+				if(cg.getGenero().equals(genero)) {
+					salvar = false;
+					break;
+				}	
+			}
+			
+			if(salvar)
+				colecaoRepository.salvarColecaoGenero(colecaoGenero);
 		}
 	}
 
@@ -227,6 +279,23 @@ public class ColecaoController implements Serializable {
 			Uteis.mensagemAtencao("Gênero não informado!");
 		}
 	}
+	
+	public void deletarColecao(Integer id) {
+		Colecao colecao = colecaoRepository.obterColecaoPorId(id);
+
+		Collection<ColecaoAutor> ca = colecaoRepository.listarPorAutoresPorColecao(colecao);
+		Collection<ColecaoGenero> cg = colecaoRepository.listarPorGenerosPorColecao(colecao);
+		
+		for (ColecaoGenero colecaoGenero : cg) {
+			colecaoRepository.deletar(colecaoGenero);
+		}
+		
+		for (ColecaoAutor colecaoAutor : ca) {
+			colecaoRepository.deletar(colecaoAutor);
+		}
+		
+		colecaoRepository.deletar(colecao);
+	}
 
 	public Colecao getColecao() {
 		if(colecao == null)
@@ -283,12 +352,12 @@ public class ColecaoController implements Serializable {
 	}
 
 	public Collection<Colecao> getListaColecoes() {
-		if(listaColecoes == null) {
+//		if(listaColecoes == null) {
 			listaColecoes = colecaoRepository.listarPorUsuario(getIdUsuarioLogado());
 			for (Colecao colecao : listaColecoes) {
 				colecao.setListaColecaoAutor(colecaoRepository.listarPorAutoresPorColecao(colecao));
 			}
-		}	
+//		}	
 		return listaColecoes;
 	}
 
@@ -304,83 +373,11 @@ public class ColecaoController implements Serializable {
 		this.colecaoSelecionada = colecaoSelecionada;
 	}
 	
-	
+	public boolean isExibir() {
+		return isExibir;
+	}
 
-	
-	private CroppedImage croppedImage;
-
-    private UploadedFile originalImageFile;
-
-    public CroppedImage getCroppedImage() {
-        return croppedImage;
-    }
-
-    public void setCroppedImage(CroppedImage croppedImage) {
-        this.croppedImage = croppedImage;
-    }
-
-    public UploadedFile getOriginalImageFile() {
-        return originalImageFile;
-    }
-
-    public void handleFileUpload(FileUploadEvent event) {
-        this.originalImageFile = null;
-        this.croppedImage = null;
-        UploadedFile file = event.getFile();
-        if(file != null && file.getContent() != null && file.getContent().length > 0 && file.getFileName() != null) {
-            this.originalImageFile = file;
-            FacesMessage msg = new FacesMessage("Successful", this.originalImageFile.getFileName() + " is uploaded.");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-        }
-    }
-
-    public void crop() {
-        if (this.croppedImage == null || this.croppedImage.getBytes() == null || this.croppedImage.getBytes().length == 0) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Cropping failed."));
-        }
-        else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Cropped successfully."));
-        }
-    }
-
-    public StreamedContent getImage() {
-        return DefaultStreamedContent.builder()
-            .contentType(originalImageFile == null ? null : originalImageFile.getContentType())
-            .stream(() -> {
-                if (originalImageFile == null
-                        || originalImageFile.getContent() == null
-                        || originalImageFile.getContent().length == 0) {
-                    return null;
-                }
-
-                try {
-                    return new ByteArrayInputStream(originalImageFile.getContent());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return null;
-                }
-            })
-            .build();
-    }
-
-    public StreamedContent getCropped() {
-        return DefaultStreamedContent.builder()
-                .contentType(originalImageFile == null ? null : originalImageFile.getContentType())
-                .stream(() -> {
-                    if (croppedImage == null
-                            || croppedImage.getBytes() == null
-                            || croppedImage.getBytes().length == 0) {
-                        return null;
-                    }
-
-                    try {
-                        return new ByteArrayInputStream(this.croppedImage.getBytes());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        return null;
-                    }
-                })
-                .build();
-    }
-
+	public void setExibir(boolean isExibir) {
+		this.isExibir = isExibir;
+	}
 }

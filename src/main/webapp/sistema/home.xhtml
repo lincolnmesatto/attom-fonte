@@ -12,7 +12,7 @@
  
 	<ui:define name="content">
  		<div class="card">
-   			 <h:form>
+   			 <h:form id="formHome">
 		        <p:dataTable id="colecao" var="colecao" value="#{colecaoController.listaColecoes}" rowKey="#{colecao.id}"
 		                     selection="#{colecaoController.colecaoSelecionada}" selectionMode="single">
 		            <f:facet name="header">
@@ -28,7 +28,23 @@
 		            <p:column headerText="Editora">
 		                <h:outputText value="#{colecao.editora.nome}" />
 		            </p:column>
+		            <p:column headerText="Editar">
+		                <p:commandLink action="#{colecaoController.iniciarEditar(colecao.id, false)}"><i class="fa fa-fw fa-pencil"/></p:commandLink> 
+		            </p:column>
+      		        <p:column headerText="Exibir">
+		                <p:commandLink action="#{colecaoController.iniciarEditar(colecao.id, true)}"><i class="fa fa-fw fa-eye"/></p:commandLink> 
+		            </p:column>
+		            <p:column headerText="Excluir">
+		                <p:commandLink action="#{colecaoController.deletarColecao(colecao.id)}" update="formHome"><i class="fa fa-fw fa-trash"/>
+		                	<p:confirm header="Confirmação" message="Deseja realmente excluir o item?" icon="fa fa-fw fa-info-circle"/>
+		                </p:commandLink> 
+		            </p:column>
 		        </p:dataTable>
+		        
+		        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+		            <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" />
+		            <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+		        </p:confirmDialog>
 		    </h:form>
 		 </div>       
  

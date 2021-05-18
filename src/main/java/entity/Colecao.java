@@ -21,7 +21,8 @@ import javax.persistence.Transient;
 
 @NamedQueries({
 	@NamedQuery(name = "Colecao.obterPorTituloUsuario", query = "SELECT c FROM Colecao c WHERE c.titulo = :titulo AND c.usuario.id = :id"),
-	@NamedQuery(name = "Colecao.listarPorUsuario", query = "SELECT c FROM Colecao c WHERE c.usuario.id = :id")
+	@NamedQuery(name = "Colecao.listarPorUsuario", query = "SELECT c FROM Colecao c WHERE c.usuario.id = :id"),
+	@NamedQuery(name = "Colecao.obterPorId", query = "SELECT c FROM Colecao c WHERE c.id = :id")
 })
 
 public class Colecao implements Serializable {
