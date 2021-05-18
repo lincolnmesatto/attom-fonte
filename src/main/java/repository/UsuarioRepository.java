@@ -73,5 +73,14 @@ public class UsuarioRepository implements Serializable {
 			e.getStackTrace();
 		}
 	}
+	public void updateUsuario(Usuario usuario){
+		try {
+			entityManager = Uteis.jpaEntityManager();
+
+			entityManager.merge(usuario);
+		}catch (Exception e){
+			e.getStackTrace();
+		}
+	}
 
 }

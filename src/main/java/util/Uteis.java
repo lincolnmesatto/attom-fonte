@@ -50,4 +50,9 @@ public class Uteis {
 
 		return new BigInteger(1, m.digest()).toString(16);
 	}
+	public static Integer getIdUsuarioLogado(){
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+
+		return (Integer)facesContext.getExternalContext().getSessionMap().get("idUsuarioAutenticado");
+	}
 }

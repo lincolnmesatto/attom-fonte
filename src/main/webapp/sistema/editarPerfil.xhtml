@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template/layoutBase.xhtml">
+
+    <ui:define name="content">
+        <div class="card" style="...">
+            <h:form>
+                <h3 class="card-title">Editar Perfil</h3>
+                <p:inputText styleClass="" placeholder="#{perfilController.usuario.nome}" value="#{perfilController.usuario.nome}"/>
+                <br/>
+                <br/>
+                <p:inputText styleClass="" placeholder="Email" value="#{perfilController.usuario.email}"/>
+                <br/>
+                <p:commandButton type="button" styleClass="btn btn-success" />
+                <p:inputText styleClass="" placeholder="Senha Antiga"/>
+                <br/>
+                <p:inputText styleClass="" placeholder="Nova Senha"/>
+            </h:form>
+        </div>
+
+        <p:dialog header="Alterar Senha" widgetVar="modalEditPass" minHeight="40" width="350" showEffect="fade" modal="true">
+            <h:form>
+                <p:growl id="mensagem-autor" showDetail="true" sticky="true" />
+
+                <p:outputLabel value="Senha" for="senhaModal"/>
+                <p:inputText id="senhaModal" styleClass="senhaModal" placeholder="Senha" value="#{perfilController.usuario.senha}" required="true" style="width: 100%">
+                    <p:ajax event="blur" process="@this" />
+                </p:inputText>
+                <br/>
+
+                <p:commandButton value="Adicionar" process="@form" styleClass="btn btn-success" action="#{perfilController.salvar()}" update="mensagem-autor @all"/>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+
+</ui:composition>
+</html>
