@@ -9,10 +9,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Table(name = "tb_colecao_genero")
 @Entity
+
+@NamedQueries({
+	@NamedQuery(name = "ColecaoGenero.listarPorColecao", query = "SELECT cg FROM ColecaoGenero cg WHERE cg.colecao.id = :id")
+})
 public class ColecaoGenero implements Serializable {
 	private static final long serialVersionUID = -3034939477151035891L;
 	
