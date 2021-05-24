@@ -79,7 +79,9 @@ public class ColecaoController implements Serializable {
 		isVolumeUnico = colecao.isVolumeUnico();
 		
 		colecao.setEditoraSelecionada(colecao.getEditora().getNome());
-		colecao.setSeloSelecionado(colecao.getSelo().getDescricao());
+		
+		if(colecao.getSelo() != null)
+			colecao.setSeloSelecionado(colecao.getSelo().getDescricao());
 		
 		Collection<ColecaoAutor> ca = colecaoRepository.listarPorAutoresPorColecao(colecao);
 		Collection<ColecaoGenero> cg = colecaoRepository.listarPorGenerosPorColecao(colecao);
