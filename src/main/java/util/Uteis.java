@@ -34,7 +34,7 @@ public class Uteis {
  
 		FacesContext facesContext = FacesContext.getCurrentInstance();
  
-		facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atenï¿½ï¿½o:", mensagem));
+		facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atenção:", mensagem));
 	}
  
 	//MOSTRAR MENSAGEM

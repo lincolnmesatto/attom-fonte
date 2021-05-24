@@ -29,7 +29,7 @@ public class SeloRepository implements Serializable {
 	public Selo obterSeloPorNome(String nome){
 		try {
 			Query query = Uteis.jpaEntityManager().createNamedQuery("Selo.obterPorNome");
-			query.setParameter("nome", nome);
+			query.setParameter("descricao", nome);
 			
 			return (Selo)query.getSingleResult();
 		} catch (Exception e) {
