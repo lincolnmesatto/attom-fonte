@@ -140,7 +140,7 @@ public class ColecaoController implements Serializable {
     	return generos.stream().filter(t -> t.getDescricao().toLowerCase().contains(queryLowerCase)).collect(Collectors.toList());
     }
 	
-	public Boolean salvar() {
+	public String salvar() {
 		try {
 			Colecao c = getColecao();
 
@@ -179,7 +179,7 @@ public class ColecaoController implements Serializable {
 
 			salvarRelacionamentos(c);
 			
-			return true;
+			return "home?faces-redirect=true";
 		}catch (Exception e) {
 			e.getStackTrace();
 		}

@@ -7,16 +7,13 @@
 	<h:form>
  
 		<p:menubar>
-			<p:menuitem value="Home" icon="ui-icon-home" />
+			<p:menuitem value="Home" icon="fa fa-fw fa-home" action="#{colecaoController.iniciarProcessoHome()}" />
 			<p:submenu label="Cadastros" icon="fa fa-fw fa-book">
                 <p:menuitem value="Coleção" icon="fa fa-fw fa-book" action="#{colecaoController.iniciarProcesso(false)}"/>
                 <p:menuitem value="Volume Único" icon="fa fa-fw fa-book" action="#{colecaoController.iniciarProcesso(true)}"/>
             </p:submenu>
-			<p:menuitem value="Consulta" icon="ui-icon-document" />
-			<p:menuitem value="Consulta por Carousel" icon="ui-icon-document" />
-			<p:menuitem value="Gráfico tipo Pessoa" icon="ui-icon-document" />
-			<p:menuitem value="Exportar XML Pessoa" icon="ui-icon-document" />
- 
+            
+            <p:menuitem value="Editar Perfil" icon="ui-icon-document" action="#{perfilController.iniciaProcesso()}" />
  
 			<f:facet name="options">            
            	        <p:commandButton value="Logout" icon="ui-icon-extlink" action="#{usuarioController.logout()}"/>

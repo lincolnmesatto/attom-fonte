@@ -5,7 +5,6 @@ import java.io.Serializable;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import entity.Editora;
 import entity.Usuario;
 import util.Uteis;
 
@@ -74,4 +73,13 @@ public class UsuarioRepository implements Serializable {
 		}
 	}
 
+	public void updateUsuario(Usuario usuario){
+		try {
+			entityManager = Uteis.jpaEntityManager();
+
+			entityManager.merge(usuario);
+		}catch (Exception e){
+			e.getStackTrace();
+		}
+	}
 }

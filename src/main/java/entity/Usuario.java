@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Table(name = "tb_usuario")
 @Entity
@@ -41,6 +42,21 @@ public class Usuario implements Serializable {
 	
 	@Column(name = "email", length = 45, nullable = false)
 	private String email;
+	
+	@Transient
+	private String senhaAntiga;
+	
+	@Transient
+	private String senhaModal;
+	
+	@Transient
+	private String senhaModalConfirmar;
+	
+	@Transient
+	private boolean habilitaConfirmar;
+	
+	@Transient
+	private boolean habilitaNovoConfirmar;
 
 	public Usuario() {}
 	
@@ -90,6 +106,46 @@ public class Usuario implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getSenhaAntiga() {
+		return senhaAntiga;
+	}
+
+	public void setSenhaAntiga(String senhaAntiga) {
+		this.senhaAntiga = senhaAntiga;
+	}
+
+	public String getSenhaModal() {
+		return senhaModal;
+	}
+
+	public void setSenhaModal(String senhaModal) {
+		this.senhaModal = senhaModal;
+	}
+
+	public String getSenhaModalConfirmar() {
+		return senhaModalConfirmar;
+	}
+
+	public void setSenhaModalConfirmar(String senhaModalConfirmar) {
+		this.senhaModalConfirmar = senhaModalConfirmar;
+	}
+
+	public boolean isHabilitaConfirmar() {
+		return habilitaConfirmar;
+	}
+
+	public void setHabilitaConfirmar(boolean habilitaConfirmar) {
+		this.habilitaConfirmar = habilitaConfirmar;
+	}
+
+	public boolean isHabilitaNovoConfirmar() {
+		return habilitaNovoConfirmar;
+	}
+
+	public void setHabilitaNovoConfirmar(boolean habilitaNovoConfirmar) {
+		this.habilitaNovoConfirmar = habilitaNovoConfirmar;
 	}
 
 	@Override

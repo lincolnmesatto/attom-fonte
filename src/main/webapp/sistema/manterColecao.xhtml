@@ -9,107 +9,68 @@
  
  
 <ui:composition template="/template/layoutBase.xhtml">
- 
+
+
 	<ui:define name="content">
- 		<div class="card"> 
+ 		<div class="card" style="margin-left: 25%; width: 30%; padding: 30px; margin-bottom: 500px" >
    			 <h:form>
    			 	<p:growl id="growl-mensagem" showDetail="true" sticky="true" /> 
-   			 
-		        <p:inputText styleClass="titulo" placeholder="Título" value="#{colecaoController.colecao.titulo}" required="true"/>
-			    <br/><br/>
+				  <h3 class="card-title">Cadastre seu livro!</h3>
+		        <p:inputText styleClass="titulo" placeholder="Título" value="#{colecaoController.colecao.titulo}" required="true" disabled="#{colecaoController.exibir}"/>
+			    <br/>
 			    
-			    <p:selectBooleanCheckbox value="#{colecaoController.colecao.completo}" itemLabel="#{!colecaoController.volumeUnico ? 'Completo?' : 'Lido'}"/>
-			    <br/><br/>
+			    <p:selectBooleanCheckbox value="#{colecaoController.colecao.completo}" itemLabel="#{!colecaoController.volumeUnico ? 'Completo?' : 'Lido'}" 
+   						disabled="#{colecaoController.exibir}"/>
+			    <br/>
 			    
 			    <h:panelGroup rendered="#{!colecaoController.volumeUnico}">
-					<p:inputNumber value="#{colecaoController.colecao.ultimoComprado}" decimalPlaces="0" modifyValueOnWheel="false" placeholder="Último Volume Comprado" />
-				    <br/><br/>
+					<p:inputNumber value="#{colecaoController.colecao.ultimoComprado}" decimalPlaces="0" modifyValueOnWheel="false" placeholder="Último Volume Comprado"
+						disabled="#{colecaoController.exibir}" />
+				    <br/>
 				    
-					<p:inputNumber value="#{colecaoController.colecao.ultimoLido}" decimalPlaces="0" modifyValueOnWheel="false" placeholder="Último Volume Lido" />
-				    <br/><br/>
+					<p:inputNumber value="#{colecaoController.colecao.ultimoLido}" decimalPlaces="0" modifyValueOnWheel="false" placeholder="Último Volume Lido"
+						disabled="#{colecaoController.exibir}" />
+				    <br/>
 				</h:panelGroup>    
 			    
 			    <div>
 	                <p:outputLabel value="Editora" for="editora"/>
 	                <p:autoComplete id="editora" value="#{colecaoController.colecao.editoraSelecionada}"
-                            completeMethod="#{colecaoController.completeEditora}"  scrollHeight="250"/>
+                            completeMethod="#{colecaoController.completeEditora}"  scrollHeight="250" disabled="#{colecaoController.exibir}"/>
             	</div>
-            	<br/><br/>
+            	<br/>
 
 			    <div>
 	                <p:outputLabel value="Selo" for="selo"/>
 	                <p:autoComplete id="selo" value="#{colecaoController.colecao.seloSelecionado}"
-                            completeMethod="#{colecaoController.completeSelo}"  scrollHeight="250"/>
+                            completeMethod="#{colecaoController.completeSelo}"  scrollHeight="250" disabled="#{colecaoController.exibir}"/>
             	</div>
-            	<br/><br/>
+            	<br/>
 
 				<h5>Autor(es)</h5>
 		        <p:autoComplete id="autores" multiple="true" value="#{colecaoController.colecao.autoresSelecionados}"
 		                        completeMethod="#{colecaoController.completeAutor}"
 		                        var="autor" itemLabel="#{autor.nome}" itemValue="#{autor}"
-		                        converter="#{autorConverter}" forceSelection="true" scrollHeight="250">
+		                        converter="#{autorConverter}" forceSelection="true" scrollHeight="250" disabled="#{colecaoController.exibir}">
 		            <p:column>
 		                <h:outputText style="vertical-align: left; margin-left: .5rem" value="#{autor.nome}"/>
 		            </p:column>
 		        </p:autoComplete>
-		        <p:commandButton type="button" icon="fa fa-plus" onclick="PF('modalAddAutor').show()"/>
-            	<br/><br/>
+		        <p:commandButton type="button" icon="fa fa-plus" onclick="PF('modalAddAutor').show()" rendered="#{!colecaoController.exibir}"/>
+            	<br/>
 
 				<h5>Gênero(s)</h5>
 		        <p:autoComplete id="generos" multiple="true" value="#{colecaoController.colecao.generosSelecionados}"
-		                        completeMethod="#{colecaoController.completeGenero}"
+		                        completeMethod="#{colecaoController.completeGenero}" disabled="#{colecaoController.exibir}"
 		                        var="genero" itemLabel="#{genero.descricao}" itemValue="#{genero}"
 		                        converter="#{generoConverter}" forceSelection="true" scrollHeight="250">
 		            <p:column>
 		                <h:outputText style="vertical-align: left; margin-left: .5rem" value="#{genero.descricao}"/>
 		            </p:column>
 		        </p:autoComplete>
-		        <p:commandButton type="button" icon="fa fa-plus" onclick="PF('modalAddGenero').show()"/>
-            	<br/><br/>
+		        <p:commandButton type="button" icon="fa fa-plus" onclick="PF('modalAddGenero').show()" rendered="#{!colecaoController.exibir}"/>
 
-
-
-<!-- 				<p:fileUpload mode="advanced" -->
-<!--                       multiple="false" -->
-<!--                       sizeLimit="102400" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" -->
-<!--                       invalidSizeMessage="Maximum file size allowed is 100 KB" -->
-<!--                       invalidFileMessage="only gif | jpg | jpeg | png is allowed" -->
-<!--                       update="messages cropperPanel" -->
-<!--                       listener="#{cropUploaderBean.handleFileUpload}"/> -->
-
-<!-- 		        <p:outputPanel id="cropperPanel"> -->
-		
-<!-- 		            <h:panelGrid columns="1" rendered="#{not empty cropUploaderBean.originalImageFile}"> -->
-		
-<!-- 		                <p:commandButton value="Crop" -->
-<!-- 		                                 action="#{cropUploaderBean.crop}" -->
-<!-- 		                                 update="cropped messages" styleClass="p-my-3"/> -->
-		
-<!-- 		                <h:panelGrid columns="2" cellpadding="7"> -->
-		
-<!-- 		                    <p:imageCropper -->
-<!-- 		                            value="#{cropUploaderBean.croppedImage}" -->
-<!-- 		                            id="imageCropper" cache="false" -->
-<!-- 		                            image="#{cropUploaderBean.image}" -->
-<!-- 		                            initialCoords="50,50,150,100" -->
-<!-- 		                            minSize="50,50" maxSize="350,350"/> -->
-		
-<!-- 		                    <p:outputPanel id="cropped"> -->
-<!-- 		                        <p:graphicImage cache="false" -->
-<!-- 		                                        rendered="#{not empty cropUploaderBean.croppedImage}" -->
-<!-- 		                                        value="#{cropUploaderBean.cropped}"/> -->
-<!-- 		                    </p:outputPanel> -->
-		
-<!-- 		                </h:panelGrid> -->
-		
-		
-<!-- 		            </h:panelGrid> -->
-<!-- 		        </p:outputPanel> -->
-
-
-            	<br/><br/>
-            	
-				<p:commandButton value="Salvar" styleClass="btn btn-success" action="#{colecaoController.salvar()}" update="growl-mensagem" />
+				<p:commandButton value="Salvar" styleClass="btn btn-success" action="#{colecaoController.salvar()}" update="growl-mensagem" rendered="#{!colecaoController.exibir}" />
 		    </h:form>
 		 </div>   
 		 
