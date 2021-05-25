@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+ 
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+ 
+ 
+<ui:composition template="/template/layoutBase.xhtml">
+
+
+	<ui:define name="content">
+ 		<div class="card" style="margin-left: 15%; width: 30%; padding: 50px; margin-bottom: 500px; width: 75%; position: absolute" >
+   			 <h:form>
+   			 	<p:growl id="growl-mensagem" showDetail="true" sticky="true" /> 
+				  <h3 class="card-title">Cadastre seu livro!</h3>
+		        <p:inputText styleClass="titulo" placeholder="Título" style="margin: 10px" value="#{colecaoController.colecao.titulo}" required="true"/>
+
+			    
+			    <p:selectBooleanCheckbox style="margin: 10px" value="#{colecaoController.colecao.completo}" itemLabel="#{!colecaoController.volumeUnico ? 'Coleção completa?' : 'Lido'}"/>
+
+			    
+			    <h:panelGroup rendered="#{!colecaoController.volumeUnico}">
+					<p:inputNumber style="margin: 10px; width: 40px" value="#{colecaoController.colecao.ultimoComprado}" decimalPlaces="0" modifyValueOnWheel="false" placeholder="Último volume obtido" />
+
+				    
+					<p:inputNumber style="margin: 10px"  value="#{colecaoController.colecao.ultimoLido}" decimalPlaces="0" modifyValueOnWheel="false" placeholder="Último volume lido" />
+
+				</h:panelGroup>    
+			    
+			    <div>
+	                <p:outputLabel style="margin: 15px" value="Editora" for="editora"/>
+	                <p:autoComplete id="editora" style="margin: 10px; margin-top: 35px" value="#{colecaoController.colecao.editoraSelecionada}"
+                            completeMethod="#{colecaoController.completeEditora}"  scrollHeight="250"/>
+            	</div>
+            	<br/>
+
+			    <div>
+	                <p:outputLabel value="Selo" for="selo" style="margin: 15px; margin-left: 43px"/>
+	                <p:autoComplete id="selo" value="#{colecaoController.colecao.seloSelecionado}"
+                            completeMethod="#{colecaoController.completeSelo}"  scrollHeight="250"/>
+            	</div>
+            	<br/>
+
+				<h5>Autor(es)</h5>
+		        <p:autoComplete id="autores" multiple="true" value="#{colecaoController.colecao.autoresSelecionados}"
+		                        completeMethod="#{colecaoController.completeAutor}"
+		                        var="autor" itemLabel="#{autor.nome}" itemValue="#{autor}"
+		                        converter="#{autorConverter}" forceSelection="true" scrollHeight="250">
+		            <p:column>
+		                <h:outputText style="vertical-align: left; margin-left: .5rem" value="#{autor.nome}"/>
+		            </p:column>
+		        </p:autoComplete>
+		        <p:commandButton style="margin-bottom: 10px; margin-left: 15px; position: absolute" type="button" icon="fa fa-plus" onclick="PF('modalAddAutor').show()"/>
+            	<br/>
+
+				<h5>Gênero(s)</h5>
+		        <p:autoComplete id="generos" multiple="true" value="#{colecaoController.colecao.generosSelecionados}"
+		                        completeMethod="#{colecaoController.completeGenero}"
+		                        var="genero" itemLabel="#{genero.descricao}" itemValue="#{genero}"
+		                        converter="#{generoConverter}" forceSelection="true" scrollHeight="250">
+		            <p:column>
+		                <h:outputText style="vertical-align: left; margin-left: .5rem" value="#{genero.descricao}"/>
+		            </p:column>
+		        </p:autoComplete>
+		        <p:commandButton  style="margin-bottom: 10px; margin-left: 15px; position: absolute" type="button" icon="fa fa-plus" onclick="PF('modalAddGenero').show()"/>
+
+
+
+
+<!-- 				<p:fileUpload mode="advanced" -->
+<!--                       multiple="false" -->
+<!--                       sizeLimit="102400" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" -->
+<!--                       invalidSizeMessage="Maximum file size allowed is 100 KB" -->
+<!--                       invalidFileMessage="only gif | jpg | jpeg | png is allowed" -->
+<!--                       update="messages cropperPanel" -->
+<!--                       listener="#{cropUploaderBean.handleFileUpload}"/> -->
+
+<!-- 		        <p:outputPanel id="cropperPanel"> -->
+		
+<!-- 		            <h:panelGrid columns="1" rendered="#{not empty cropUploaderBean.originalImageFile}"> -->
+		
+<!-- 		                <p:commandButton value="Crop" -->
+<!-- 		                                 action="#{cropUploaderBean.crop}" -->
+<!-- 		                                 update="cropped messages" styleClass="p-my-3"/> -->
+		
+<!-- 		                <h:panelGrid columns="2" cellpadding="7"> -->
+		
+<!-- 		                    <p:imageCropper -->
+<!-- 		                            value="#{cropUploaderBean.croppedImage}" -->
+<!-- 		                            id="imageCropper" cache="false" -->
+<!-- 		                            image="#{cropUploaderBean.image}" -->
+<!-- 		                            initialCoords="50,50,150,100" -->
+<!-- 		                            minSize="50,50" maxSize="350,350"/> -->
+		
+<!-- 		                    <p:outputPanel id="cropped"> -->
+<!-- 		                        <p:graphicImage cache="false" -->
+<!-- 		                                        rendered="#{not empty cropUploaderBean.croppedImage}" -->
+<!-- 		                                        value="#{cropUploaderBean.cropped}"/> -->
+<!-- 		                    </p:outputPanel> -->
+		
+<!-- 		                </h:panelGrid> -->
+		
+		
+<!-- 		            </h:panelGrid> -->
+<!-- 		        </p:outputPanel> -->
+
+
+
+				<p:card style="width: 27%; margin-top: 15px">
+				<p:commandButton value="Salvar"  style="width: 100%" styleClass="btn btn-success" action="#{colecaoController.salvar()}" update="growl-mensagem" />
+
+				</p:card>
+			 </h:form>
+		 </div>   
+		 
+		 <p:dialog header="Adicionar Autor" widgetVar="modalAddAutor" minHeight="40" width="350" showEffect="fade" modal="true">
+		 	<h:form>
+		 		<p:growl id="mensagem-autor" showDetail="true" sticky="true" />
+		 	
+				<p:outputLabel value="Nome do Autor" for="nomeModal"/>
+			    <p:inputText id="nomeModal" styleClass="nomeModal" placeholder="Nome" value="#{colecaoController.colecao.autorModal}" required="true" style="width: 100%">
+			    	<p:ajax event="blur" process="@this" />
+			    </p:inputText>
+			    <br/>
+			    
+			    <p:commandButton value="Adicionar" process="@form" styleClass="btn btn-success" action="#{colecaoController.salvarAutor()}" update="mensagem-autor @all"/>
+			</h:form>    
+		</p:dialog>
+		
+		<p:dialog header="Adicionar Gênero" widgetVar="modalAddGenero" minHeight="40" width="350" showEffect="fade" modal="true">
+		 	<h:form>
+		 		<p:growl id="mensagem-genero" showDetail="true" sticky="true" />
+		 	
+				<p:outputLabel value="Gênero" for="generoModal"/>
+			    <p:inputText id="generoModal" styleClass="generoModal" placeholder="Gênero" value="#{colecaoController.colecao.generoModal}" required="true" style="width: 100%">
+			    	<p:ajax event="blur" process="@this" />
+			    </p:inputText>
+			    <br/>
+			    
+			    <p:commandButton value="Adicionar" process="@form" styleClass="btn btn-success" action="#{colecaoController.salvarGenero()}" update="mensagem-genero @all"/>
+			</h:form>    
+		</p:dialog>  
+ 
+	</ui:define>
+ 
+</ui:composition>
+</html>

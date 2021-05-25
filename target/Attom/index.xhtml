@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	  xmlns:h="http://xmlns.jcp.org/jsf/html"
+	  xmlns:f="http://xmlns.jcp.org/jsf/core"
+	  xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<h:outputStylesheet library="css" name="default.css"/>
+	<link rel="stylesheet" href="resources/font-awesome/css/font-awesome.min.css"/>
+	<link rel="stylesheet" href="resources/bootstrap/css/bootstrap.min.css"/>
+</h:head>
+
+<h:body class="texture" style="display:flex;">
+
+	<h:form id="main-form" style=" margin:auto;">
+
+		<p:growl id="growl-mensagem" showDetail="true" sticky="true" />
+
+		<div class="row">
+			<p:panel id="headd"
+					 header="Login"
+					 footer="Entre agora e conheça o mais inovador sistema de coleção de livros e mangás!"
+					 style="width:1000px; height: 500px;"
+					 rendered="#{!usuarioController.verificaCadastro}">
+
+				<h:panelGrid>
+					<p:graphicImage url="/resources/imagens/logoAttom.jpg" style="width: 250px; margin-left: 600px; margin-top: 30px; position: fixed" />
+					<h:panelGrid columns="2" cellpadding="5" style="margin-top: 70px">
+						<p:outputLabel styleClass="main-font"  value="Login"/>
+						<p:inputText id="inputText-login" styleClass="main-form"
+									 value="#{usuarioController.usuario.login}"/>
+
+						<p:outputLabel styleClass="main-font" value="Senha"/>
+						<p:password id="password-usuario"
+									value="#{usuarioController.usuario.senha}"/>
+						&nbsp;
+						<p:commandButton value="Acessar"
+										 id="commandButton-acessar"
+										 icon="fa fa-fw fa-check"
+										 action="#{usuarioController.efetuarLogin}"
+										 update="growl-mensagem"
+						/>
+						<table>
+							<tr>
+								<p:commandLink styleClass="main-font"  value="Cadastrar" update="main-form" action="#{usuarioController.linkHomeScreen}"/>
+							</tr>
+
+							<tr>
+								<td>Não tem uma conta ainda?</td>
+							</tr>
+						</table>
+					</h:panelGrid>
+				</h:panelGrid>
+			</p:panel>
+
+		</div>
+
+		<p:panel id="cadastro"
+				 header="Cadastrar"
+				 style="width: 400px;"
+				 rendered="#{usuarioController.verificaCadastro}">
+			<h:panelGrid columns="2" cellpadding="10">
+				<p:graphicImage url="/resources/imagens/logoAttom.jpg" style="width: 150px"/>
+				<h:panelGrid>
+					<p:outputLabel value="Nome"/>
+					<p:inputText id="inputTexte-cadastroNome"
+								 value="#{usuarioController.usuario.nome}"/>
+					<p:outputLabel value="Email"/>
+					<p:inputText id="inputTexte-cadastroEmail"
+								 value="#{usuarioController.usuario.email}"/>
+					<p:outputLabel value="Login"/>
+					<p:inputText id="inputTexte-cadastroLogin"
+								 value="#{usuarioController.usuario.login}"/>
+					<p:outputLabel value="Senha"/>
+					<p:password id="inputTexte-cadastroSenha"
+								value="#{usuarioController.usuario.senha}"/>
+
+					<p:commandButton value="Criar Usuario"
+									 id="commandButton-criarUsuario"
+									 icon="ui-icon-plus"
+									 action="#{usuarioController.cadastrarUsuario}"
+									 update="growl-mensagem"
+					/>
+					<p:commandLink value="Login" update="main-form" action="#{usuarioController.linkHomeScreen}"/>
+
+				</h:panelGrid>
+			</h:panelGrid>
+		</p:panel>
+
+	</h:form>
+
+</h:body>
+</html>
