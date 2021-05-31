@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -43,6 +45,10 @@ public class Usuario implements Serializable {
 	@Column(name = "email", length = 45, nullable = false)
 	private String email;
 	
+	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "perfil", nullable = true)
+	private TipoPerfilEnum perfil;
+	
 	@Transient
 	private String senhaAntiga;
 	
@@ -60,12 +66,13 @@ public class Usuario implements Serializable {
 
 	public Usuario() {}
 	
-	public Usuario(Integer id, String login, String senha, String nome, String email) {
+	public Usuario(Integer id, String login, String senha, String nome, String email, TipoPerfilEnum perfil) {
 		this.id = id;
 		this.login = login;
 		this.senha = senha;
 		this.nome = nome;
 		this.email = email;
+		this.perfil = perfil;
 	}
 
 	public Integer getId() {
@@ -146,6 +153,14 @@ public class Usuario implements Serializable {
 
 	public void setHabilitaNovoConfirmar(boolean habilitaNovoConfirmar) {
 		this.habilitaNovoConfirmar = habilitaNovoConfirmar;
+	}
+
+	public TipoPerfilEnum getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(TipoPerfilEnum perfil) {
+		this.perfil = perfil;
 	}
 
 	@Override
