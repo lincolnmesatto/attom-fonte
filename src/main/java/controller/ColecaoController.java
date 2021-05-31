@@ -82,6 +82,7 @@ public class ColecaoController implements Serializable {
 		
 		if(colecao.getSelo() != null)
 			colecao.setSeloSelecionado(colecao.getSelo().getDescricao());
+		colecao.setSeloSelecionado(colecao.getSelo().getDescricao());
 		
 		Collection<ColecaoAutor> ca = colecaoRepository.listarPorAutoresPorColecao(colecao);
 		Collection<ColecaoGenero> cg = colecaoRepository.listarPorGenerosPorColecao(colecao);
