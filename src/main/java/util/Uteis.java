@@ -21,7 +21,6 @@ public class Uteis {
 		return (EntityManager)request.getAttribute("entityManager");
 	} 
 	
-	//MOSTRAR MENSAGEM
 	public static void mensagem(String mensagem){
  
 		FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -29,7 +28,6 @@ public class Uteis {
 		facesContext.addMessage(null, new FacesMessage("Alerta",mensagem));
 	}
  
-	//MOSTRAR MENSAGEM
 	public static void mensagemAtencao(String mensagem){
  
 		FacesContext facesContext = FacesContext.getCurrentInstance();
