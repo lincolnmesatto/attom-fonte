@@ -13,10 +13,12 @@
                 <p:menuitem value="Volume Único" icon="fa fa-fw fa-book" action="#{colecaoController.iniciarProcesso(true)}"/>
             </p:submenu>
             
-            <p:menuitem value="Editar Perfil" icon="ui-icon-document" action="#{perfilController.iniciaProcesso()}" />
+            <p:menuitem value="Editar Perfil" icon="fa fa-fw fa-user" action="#{perfilController.iniciaProcesso()}" />
+
+            <p:menuitem value="Checklist" icon="fa fa-fw fa-calendar" action="#{checklistController.iniciarProcesso()}" rendered="#{usuarioController.verificarAcesso()}" />
  
 			<f:facet name="options">            
-           	        <p:commandButton value="Logout" icon="ui-icon-extlink" action="#{usuarioController.logout()}"/>
+           	        <p:commandButton value="Logout" icon="fa fa-fw fa-power-off" action="#{usuarioController.logout()}"/>
        		</f:facet>
 		</p:menubar>
  

@@ -1,8 +1,8 @@
 package entity;
 
 public enum TipoPerfilEnum {
-	ADMIN (1, "Admin"),
-	USUARIO (2, "Usuario");
+	ADMIN (0, "Admin"),
+	USUARIO (1, "Usuario");
 	
 	private final Integer value;
 	private final String descricao;

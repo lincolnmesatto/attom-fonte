@@ -9,6 +9,7 @@ import javax.inject.Named;
 
 import org.apache.commons.lang3.StringUtils;
 
+import entity.TipoPerfilEnum;
 import entity.Usuario;
 import repository.UsuarioRepository;
 import util.Uteis;
@@ -71,6 +72,7 @@ public class UsuarioController implements Serializable {
 
 		u = usuario;
 		u.setSenha(criarHash(u));
+		u.setPerfil(TipoPerfilEnum.USUARIO);
 
 		usuarioRepository.cadastrarUsuario(u);
 
@@ -100,12 +102,16 @@ public class UsuarioController implements Serializable {
 	}
 
 	public void linkHomeScreen(){
-
 		verificaCadastro = !verificaCadastro;
-
 	}
 
-
+	public boolean verificarAcesso() {
+		Usuario u = usuarioRepository.obterUsuarioPorId(Uteis.getIdUsuarioLogado());
+		if(u.getPerfil().equals(TipoPerfilEnum.ADMIN))
+			return true;
+		
+		return false;
+	}
 	
 //	public Usuario getUsuarioSession(){
 //		FacesContext facesContext = FacesContext.getCurrentInstance();
