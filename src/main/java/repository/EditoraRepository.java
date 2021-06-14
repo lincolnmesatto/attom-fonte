@@ -6,13 +6,15 @@ import java.util.Collection;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import entity.Colecao;
+import org.apache.log4j.Logger;
+
 import entity.Editora;
 import util.Uteis;
 
 public class EditoraRepository implements Serializable {
 
 	private static final long serialVersionUID = -5250014497810012921L;
+	private static Logger logger = Logger.getLogger(EditoraRepository.class);
 	
 	EntityManager entityManager;
 	
@@ -23,6 +25,7 @@ public class EditoraRepository implements Serializable {
 			
 			return (Collection<Editora>)query.getResultList();
 		} catch (Exception e) {
+			logger.error("erro ao listarEditoras"+ e.getMessage());
 			return null;
 		}
 	}
@@ -34,6 +37,7 @@ public class EditoraRepository implements Serializable {
 			
 			return (Editora)query.getSingleResult();
 		} catch (Exception e) {
+			logger.error("erro ao obterEditoraPorNome"+ e.getMessage());
 			return null;
 		}
 	}
@@ -44,6 +48,7 @@ public class EditoraRepository implements Serializable {
 			
 			entityManager.persist(editora);
 		}catch (Exception e) {
+			logger.error("erro ao salvar editora"+ e.getMessage());
 			e.getStackTrace();
 		}	
 	}

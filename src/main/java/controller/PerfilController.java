@@ -7,6 +7,7 @@ import javax.faces.bean.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.log4j.Logger;
 import org.primefaces.PrimeFaces;
 
 import entity.Usuario;
@@ -18,6 +19,7 @@ import util.Uteis;
 public class PerfilController implements Serializable{
 
 	private static final long serialVersionUID = 8199504929257291609L;
+	private static Logger logger = Logger.getLogger(PerfilController.class);
 
 	@Inject
     private UsuarioRepository usuarioRepository;
@@ -42,9 +44,12 @@ public class PerfilController implements Serializable{
             Usuario u = getUsuario();
             usuarioRepository.updateUsuario(u);
             
+            logger.info("Usuario alterado com sucesso");
+            
             return "home?faces-redirect=true";
 	    }catch (Exception e){
             e.getStackTrace();
+            logger.error("Erro ao alterar o usuario: "+ e.getStackTrace());
         }
         
         return null;
@@ -56,6 +61,8 @@ public class PerfilController implements Serializable{
     	if(!senhaAntiga.equals(getUsuario().getSenha())) {
     		Uteis.mensagemAtencao("Senha antiga incorreta!");
     		getUsuario().setHabilitaConfirmar(false);
+    		
+    		logger.error("senha antiga incorreta");
     	}else
     		getUsuario().setHabilitaConfirmar(true);
     	
@@ -96,8 +103,12 @@ public class PerfilController implements Serializable{
     	
     	if(!senhaAntiga.equals(getUsuario().getSenha())) {
     		Uteis.mensagemAtencao("Senha antiga incorreta!");
+    		
+    		logger.error("senha antiga incorreta");
     	}else if(!getUsuario().getSenhaModal().equals(getUsuario().getSenhaModalConfirmar())) {
     		Uteis.mensagemAtencao("As senhas sao diferentes!");
+    		
+    		logger.error("As senhas sao diferentes");
     	}else {
 			Usuario u = usuarioRepository.obterUsuarioPorId(Uteis.getIdUsuarioLogado());
 			String senhaHash = criarHash(u, usuario.getSenhaModalConfirmar());
@@ -113,6 +124,8 @@ public class PerfilController implements Serializable{
 			getUsuario().setSenhaModalConfirmar(null);
 			
 			Uteis.mensagemInfo("Senha alterada com sucesso!");
+			
+			logger.info("Senha alterada com sucesso");
     	}	
 	}
 

@@ -5,12 +5,16 @@ import java.io.Serializable;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import org.apache.log4j.Logger;
+
 import entity.Usuario;
 import util.Uteis;
 
 public class UsuarioRepository implements Serializable {
 
 	private static final long serialVersionUID = 3598547438948248246L;
+	private static Logger logger = Logger.getLogger(UsuarioRepository.class);
+	
 	EntityManager entityManager;
 
 	public Usuario validaUsuario(Usuario usuario){
@@ -22,6 +26,7 @@ public class UsuarioRepository implements Serializable {
  
 			return (Usuario)query.getSingleResult();
 		} catch (Exception e) {
+			logger.error("erro ao validarUsuario"+ e.getMessage());
 			return null;
 		}
 	}
@@ -33,6 +38,7 @@ public class UsuarioRepository implements Serializable {
 			
 			return (Usuario)query.getSingleResult();
 		} catch (Exception e) {
+			logger.error("erro ao obterUsuarioPorId"+ e.getMessage());
 			return null;
 		}
 	}
@@ -45,6 +51,7 @@ public class UsuarioRepository implements Serializable {
 
 			return (Usuario)query.getSingleResult();
 		} catch (Exception e) {
+			logger.error("erro ao validarLogin"+ e.getMessage());
 			return null;
 		}
 
@@ -58,6 +65,7 @@ public class UsuarioRepository implements Serializable {
 
 			return (Usuario)query.getSingleResult();
 		} catch (Exception e) {
+			logger.error("erro ao validarEmail"+ e.getMessage());
 			return null;
 		}
 
@@ -69,6 +77,7 @@ public class UsuarioRepository implements Serializable {
 
 			entityManager.persist(usuario);
 		}catch (Exception e) {
+			logger.error("erro ao cadastrarUsuario"+ e.getMessage());
 			e.getStackTrace();
 		}
 	}
@@ -79,6 +88,7 @@ public class UsuarioRepository implements Serializable {
 
 			entityManager.merge(usuario);
 		}catch (Exception e){
+			logger.error("erro ao atualizarUsuario"+ e.getMessage());
 			e.getStackTrace();
 		}
 	}

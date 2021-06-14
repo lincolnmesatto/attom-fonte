@@ -6,12 +6,15 @@ import java.util.Collection;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import org.apache.log4j.Logger;
+
 import entity.Checklist;
 import util.Uteis;
 
 public class ChecklistRepository implements Serializable {
 
 	private static final long serialVersionUID = -1494989440332980715L;
+	private static Logger logger = Logger.getLogger(ChecklistRepository.class);
 	
 	EntityManager entityManager;
 	
@@ -22,6 +25,7 @@ public class ChecklistRepository implements Serializable {
 			
 			return (Collection<Checklist>)query.getResultList();
 		} catch (Exception e) {
+			logger.error("erro ao listarChecklistAdmin"+ e.getMessage());
 			return null;
 		}
 	}
@@ -33,6 +37,7 @@ public class ChecklistRepository implements Serializable {
 			
 			return (Checklist)query.getSingleResult();
 		} catch (Exception e) {
+			logger.error("erro ao obterChecklistPorId"+ e.getMessage());
 			return null;
 		}
 	}
@@ -43,6 +48,7 @@ public class ChecklistRepository implements Serializable {
 			
 			entityManager.persist(c);
 		}catch (Exception e) {
+			logger.error("erro ao salvar checklist"+ e.getMessage());
 			e.getStackTrace();
 		}	
 	}
@@ -53,6 +59,7 @@ public class ChecklistRepository implements Serializable {
 			
 			entityManager.remove(c);
 		}catch (Exception e) {
+			logger.error("erro ao deletar checklist"+ e.getMessage());
 			e.getStackTrace();
 		}	
 	}

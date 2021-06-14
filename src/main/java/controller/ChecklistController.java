@@ -9,6 +9,8 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.log4j.Logger;
+
 import entity.Checklist;
 import entity.Editora;
 import repository.ChecklistRepository;
@@ -19,6 +21,7 @@ import repository.EditoraRepository;
 public class ChecklistController implements Serializable {
 
 	private static final long serialVersionUID = 4893657327728525299L;
+	private static Logger logger = Logger.getLogger(ChecklistController.class);
 	
 	@Inject
 	private EditoraRepository editoraRepository;
@@ -76,6 +79,8 @@ public class ChecklistController implements Serializable {
 		
 		listaChecklist.add(c);
 		
+		logger.info("checklist cadastrado com sucesso");
+		
 		return "listarChecklist?faces-redirect=true";
     }
     
@@ -86,6 +91,8 @@ public class ChecklistController implements Serializable {
     	
     	listaChecklist = new ArrayList<>();
     	listaChecklist = checklistRepository.listarChecklistAdmin();
+    	
+    	logger.error("checklist removido com sucesso");
     	
     	return "listarChecklist?faces-redirect=true";
     }
