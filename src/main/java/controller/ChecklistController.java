@@ -12,9 +12,12 @@ import javax.inject.Named;
 import org.apache.log4j.Logger;
 
 import entity.Checklist;
+import entity.ChecklistUsuario;
 import entity.Editora;
 import repository.ChecklistRepository;
+import repository.ChecklistUsuarioRepository;
 import repository.EditoraRepository;
+import util.Uteis;
 
 @Named(value="checklistController")
 @SessionScoped
@@ -28,6 +31,9 @@ public class ChecklistController implements Serializable {
 	
 	@Inject
 	private ChecklistRepository checklistRepository;
+	
+	@Inject
+	private ChecklistUsuarioRepository checklistUsuarioRepository;
 	
 	private Collection<Editora> listaEditoras;
 	private Collection<String> listaNomeEditoras;
@@ -81,13 +87,13 @@ public class ChecklistController implements Serializable {
 		
 		logger.info("checklist cadastrado com sucesso");
 		
-		return "listarChecklist?faces-redirect=true";
+		return iniciarProcesso();
     }
     
     public String removerChecklist(Integer id) {
-    	//TODO verificar se tem vinculo com usuario
     	Checklist c = checklistRepository.obterPorId(id);
-    	checklistRepository.deletar(c);
+    	
+		checklistRepository.deletar(c);
     	
     	listaChecklist = new ArrayList<>();
     	listaChecklist = checklistRepository.listarChecklistAdmin();
@@ -95,6 +101,12 @@ public class ChecklistController implements Serializable {
     	logger.error("checklist removido com sucesso");
     	
     	return "listarChecklist?faces-redirect=true";
+    }
+    
+    public boolean habilitarExcluir(Checklist check) {
+    	Collection<ChecklistUsuario> listaChecklistUsuario = checklistUsuarioRepository.listarPorChecklist(check.getId());
+    	
+    	return listaChecklistUsuario == null ? false : true;
     }
     
 	public Collection<Editora> getListaEditoras() {

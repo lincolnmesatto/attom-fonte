@@ -51,6 +51,9 @@ public class Checklist implements Serializable {
 	
 	@Transient
 	private String precoFormatado;
+	
+	@Transient
+	private boolean selecionado;
 
 	public Checklist(Integer id, String titulo, Float preco, Editora editora, Usuario usuario) {
 		this.id = id;
@@ -123,5 +126,13 @@ public class Checklist implements Serializable {
 
 	public void setPrecoFormatado(String precoFormatado) {
 		this.precoFormatado = precoFormatado;
+	}
+
+	public boolean isSelecionado() {
+		return selecionado;
+	}
+
+	public void setSelecionado(boolean selecionado) {
+		this.selecionado = selecionado;
 	}
 }

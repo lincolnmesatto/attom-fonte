@@ -16,6 +16,7 @@
             <p:menuitem value="Editar Perfil" icon="fa fa-fw fa-user" action="#{perfilController.iniciaProcesso()}" />
 
             <p:menuitem value="Checklist" icon="fa fa-fw fa-calendar" action="#{checklistController.iniciarProcesso()}" rendered="#{usuarioController.verificarAcesso()}" />
+            <p:menuitem value="Planejamento" icon="fa fa-fw fa-money" action="#{checklistUsuarioController.iniciarProcesso()}" />
  
 			<f:facet name="options">            
            	        <p:commandButton value="Logout" icon="fa fa-fw fa-power-off" action="#{usuarioController.logout()}"/>

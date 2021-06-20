@@ -14,29 +14,28 @@
 	<ui:define name="content">
  		<div class="card" style="margin-left: 15%; width: 30%; padding: 50px; margin-bottom: 500px; width: 75%; position: absolute">
    			 <h:form id="formChcklist">
-   			 	<h3 class="card-title">Checklist</h3>
+   			 	<h3 class="card-title">Planejamento</h3>
    			 	
-   			 	<p:growl id="growl-mensagem" showDetail="true" sticky="true" /> 
+   			 	<p:commandButton action="#{checklistUsuarioController.iniciarIncluir()}" value="Checklist"/>
+   			 	<br/><br/>
    			 	
-   			 	<p:commandButton action="#{checklistController.iniciarIncluir()}" value="Incluir"/>
-   			 
-			    <p:dataTable id="checklist" var="check" value="#{checklistController.listaChecklist}" rowKey="#{check.id}"
+   			 	<h:panelGroup>
+					<p:outputLabel style="margin: 10px" size="32" value="Valor Limite: #{checklistUsuarioController.usuario.valor}" decimalPlaces="2" />
+				    <br/>
+   					<p:outputLabel style="margin: 10px" size="32" value="Valor Gasto: #{checklistUsuarioController.valorGasto }" decimalPlaces="2" />
+				</h:panelGroup>
+   			 	
+			    <p:dataTable id="checklist" var="check" value="#{checklistUsuarioController.listaChecklistUsuario}" rowKey="#{check.id}"
 	                     selection="#{checklistController.checklistSelecionado}" selectionMode="single">
                      <p:column headerText="Titulo">
-                		<h:outputText value="#{check.titulo}" />
+                		<h:outputText value="#{check.checklist.titulo}" />
             		 </p:column>
             		 <p:column headerText="Preco">
-                		<h:outputText value="#{check.preco}"/>
+                		<h:outputText value="#{check.checklist.preco}"/>
             		 </p:column>
             		 <p:column headerText="Editora">
-                		<h:outputText value="#{check.editora.nome}"/>
+                		<h:outputText value="#{check.checklist.editora.nome}"/>
             		 </p:column>
-            		 <p:column headerText="Remover">
-		                <p:commandLink action="#{checklistController.removerChecklist(check.id)}" update="formChcklist" disabled="#{checklistController.habilitarExcluir(check)}">
-		                	<i class="fa fa-fw fa-trash"/>
-		                	<p:confirm header="Confirmação" message="Deseja realmente excluir o item?" icon="fa fa-fw fa-info-circle"/>
-		                </p:commandLink>
-		            </p:column>
 	            </p:dataTable>
 	            
 	             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">

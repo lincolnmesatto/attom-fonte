@@ -49,6 +49,9 @@ public class Usuario implements Serializable {
 	@Column(name = "perfil", nullable = true)
 	private TipoPerfilEnum perfil;
 	
+	@Column(name = "valor_disponivel", nullable = true)
+	private Float valor;
+	
 	@Transient
 	private String senhaAntiga;
 	
@@ -161,6 +164,14 @@ public class Usuario implements Serializable {
 
 	public void setPerfil(TipoPerfilEnum perfil) {
 		this.perfil = perfil;
+	}
+
+	public Float getValor() {
+		return valor;
+	}
+
+	public void setValor(Float valor) {
+		this.valor = valor;
 	}
 
 	@Override
