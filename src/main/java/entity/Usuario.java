@@ -4,12 +4,15 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Table(name = "tb_usuario")
 @Entity
@@ -41,15 +44,38 @@ public class Usuario implements Serializable {
 	
 	@Column(name = "email", length = 45, nullable = false)
 	private String email;
+	
+	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "perfil", nullable = true)
+	private TipoPerfilEnum perfil;
+	
+	@Column(name = "valor_disponivel", nullable = true)
+	private Float valor;
+	
+	@Transient
+	private String senhaAntiga;
+	
+	@Transient
+	private String senhaModal;
+	
+	@Transient
+	private String senhaModalConfirmar;
+	
+	@Transient
+	private boolean habilitaConfirmar;
+	
+	@Transient
+	private boolean habilitaNovoConfirmar;
 
 	public Usuario() {}
 	
-	public Usuario(Integer id, String login, String senha, String nome, String email) {
+	public Usuario(Integer id, String login, String senha, String nome, String email, TipoPerfilEnum perfil) {
 		this.id = id;
 		this.login = login;
 		this.senha = senha;
 		this.nome = nome;
 		this.email = email;
+		this.perfil = perfil;
 	}
 
 	public Integer getId() {
@@ -90,6 +116,62 @@ public class Usuario implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getSenhaAntiga() {
+		return senhaAntiga;
+	}
+
+	public void setSenhaAntiga(String senhaAntiga) {
+		this.senhaAntiga = senhaAntiga;
+	}
+
+	public String getSenhaModal() {
+		return senhaModal;
+	}
+
+	public void setSenhaModal(String senhaModal) {
+		this.senhaModal = senhaModal;
+	}
+
+	public String getSenhaModalConfirmar() {
+		return senhaModalConfirmar;
+	}
+
+	public void setSenhaModalConfirmar(String senhaModalConfirmar) {
+		this.senhaModalConfirmar = senhaModalConfirmar;
+	}
+
+	public boolean isHabilitaConfirmar() {
+		return habilitaConfirmar;
+	}
+
+	public void setHabilitaConfirmar(boolean habilitaConfirmar) {
+		this.habilitaConfirmar = habilitaConfirmar;
+	}
+
+	public boolean isHabilitaNovoConfirmar() {
+		return habilitaNovoConfirmar;
+	}
+
+	public void setHabilitaNovoConfirmar(boolean habilitaNovoConfirmar) {
+		this.habilitaNovoConfirmar = habilitaNovoConfirmar;
+	}
+
+	public TipoPerfilEnum getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(TipoPerfilEnum perfil) {
+		this.perfil = perfil;
+	}
+
+	public Float getValor() {
+		return valor;
+	}
+
+	public void setValor(Float valor) {
+		this.valor = valor;
 	}
 
 	@Override

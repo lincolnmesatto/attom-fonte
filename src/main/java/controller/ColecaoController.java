@@ -10,6 +10,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.log4j.Logger;
 import org.primefaces.PrimeFaces;
 
 import entity.Autor;
@@ -33,6 +34,7 @@ import util.Uteis;
 public class ColecaoController implements Serializable {
 
 	private static final long serialVersionUID = 4389998621549207729L;
+	private static Logger logger = Logger.getLogger(ColecaoController.class);
 	
 	@Inject
 	private ColecaoRepository colecaoRepository;
@@ -82,6 +84,7 @@ public class ColecaoController implements Serializable {
 		
 		if(colecao.getSelo() != null)
 			colecao.setSeloSelecionado(colecao.getSelo().getDescricao());
+		colecao.setSeloSelecionado(colecao.getSelo().getDescricao());
 		
 		Collection<ColecaoAutor> ca = colecaoRepository.listarPorAutoresPorColecao(colecao);
 		Collection<ColecaoGenero> cg = colecaoRepository.listarPorGenerosPorColecao(colecao);
@@ -140,7 +143,7 @@ public class ColecaoController implements Serializable {
     	return generos.stream().filter(t -> t.getDescricao().toLowerCase().contains(queryLowerCase)).collect(Collectors.toList());
     }
 	
-	public Boolean salvar() {
+	public String salvar() {
 		try {
 			Colecao c = getColecao();
 
@@ -150,6 +153,7 @@ public class ColecaoController implements Serializable {
 			if(c.getId() == null) {
 				if(!validaColecao()) {
 					Uteis.mensagemAtencao("Coleção já cadastrada!");
+					logger.error("colecao ja cadastrada");
 					return null;
 				}
 			}	
@@ -179,7 +183,8 @@ public class ColecaoController implements Serializable {
 
 			salvarRelacionamentos(c);
 			
-			return true;
+			logger.info("colecao cadastrada com sucesso");
+			return "home?faces-redirect=true";
 		}catch (Exception e) {
 			e.getStackTrace();
 		}
@@ -248,14 +253,18 @@ public class ColecaoController implements Serializable {
 				
 				colecao.setAutorModal(null);
 				
+				logger.info("autor salvo com sucesso");
+				
 				PrimeFaces current = PrimeFaces.current();
 				current.executeScript("PF('modalAddAutor').hide();");
 			}else {
 				colecao.setAutorModal(null);
+				logger.error("autor ja cadastrado");
 				Uteis.mensagemAtencao("Autor já cadastrado!");
 			}
 		}else {
 			Uteis.mensagemAtencao("Nome do Autor não informado!");
+			logger.error("autor nao informado");
 		}
 	}
 
@@ -273,12 +282,16 @@ public class ColecaoController implements Serializable {
 				
 				PrimeFaces current = PrimeFaces.current();
 				current.executeScript("PF('modalAddGenero').hide();");
+				
+				logger.info("genero cadastrado com sucesso");
 			}else {
 				colecao.setAutorModal(null);
 				Uteis.mensagemAtencao("Gênero já cadastrado!");
+				logger.error("genero ja cadastrado");
 			}
 		}else {
 			Uteis.mensagemAtencao("Gênero não informado!");
+			logger.error("genero nao informado");
 		}
 	}
 	
@@ -297,6 +310,8 @@ public class ColecaoController implements Serializable {
 		}
 		
 		colecaoRepository.deletar(colecao);
+		
+		logger.info("colecao deletado com sucesso");
 	}
 
 	public Colecao getColecao() {

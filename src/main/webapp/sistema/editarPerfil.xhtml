@@ -1,44 +1,71 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+ 
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
-
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+ 
+ 
 <ui:composition template="/template/layoutBase.xhtml">
 
-    <ui:define name="content">
-        <div class="card" style="...">
-            <h:form>
-                <h3 class="card-title">Editar Perfil</h3>
-                <p:inputText styleClass="" placeholder="#{perfilController.usuario.nome}" value="#{perfilController.usuario.nome}"/>
-                <br/>
-                <br/>
-                <p:inputText styleClass="" placeholder="Email" value="#{perfilController.usuario.email}"/>
-                <br/>
-                <p:commandButton type="button" styleClass="btn btn-success" />
-                <p:inputText styleClass="" placeholder="Senha Antiga"/>
-                <br/>
-                <p:inputText styleClass="" placeholder="Nova Senha"/>
-            </h:form>
-        </div>
 
-        <p:dialog header="Alterar Senha" widgetVar="modalEditPass" minHeight="40" width="350" showEffect="fade" modal="true">
-            <h:form>
-                <p:growl id="mensagem-autor" showDetail="true" sticky="true" />
-
-                <p:outputLabel value="Senha" for="senhaModal"/>
-                <p:inputText id="senhaModal" styleClass="senhaModal" placeholder="Senha" value="#{perfilController.usuario.senha}" required="true" style="width: 100%">
-                    <p:ajax event="blur" process="@this" />
-                </p:inputText>
-                <br/>
-
-                <p:commandButton value="Adicionar" process="@form" styleClass="btn btn-success" action="#{perfilController.salvar()}" update="mensagem-autor @all"/>
-            </h:form>
-        </p:dialog>
-    </ui:define>
-
+	<ui:define name="content">
+ 		<div class="card" style="margin-left: 25%; width: 30%; padding: 30px; margin-bottom: 500px" >
+   			 <h:form>
+   			 	<p:growl id="growl-mensagem" showDetail="true" sticky="true" /> 
+   			 	
+				<h3 class="card-title">Editar Perfil</h3>
+		        Nome: <p:inputText placeholder="Nome" value="#{perfilController.usuario.nome}" size="30"/>
+			    <br/>
+			    <br/>
+			    
+		        E-mail: <p:inputText placeholder="E-mail" value="#{perfilController.usuario.email}" size="30"/>
+			    <br/>
+			    <br/>
+			    
+		        Login:&nbsp; <p:inputText placeholder="Login" value="#{perfilController.usuario.login}" disabled="true" size="30"/>
+			    <br/>
+			    <br/>
+			    
+				<p:commandLink styleClass="main-font"  value="Alterar Senha" onclick="PF('modalAlterarSenha').show()"/>
+			    <br/>
+			    <br/>
+			    
+			    <p:commandButton value="Salvar" styleClass="btn btn-success" action="#{perfilController.salvar()}" update="growl-mensagem"/>
+		    </h:form>
+		 </div>
+		 
+		 <p:dialog header="Alterar Senha" widgetVar="modalAlterarSenha" minHeight="100" width="350" showEffect="fade" modal="true">
+		 	<h:form>
+		 		<p:growl id="mensagem-senha" showDetail="true" sticky="true" />
+		 	
+				<p:outputLabel value="Senha Antiga" for="senhaAntiga"/>
+			    <p:password id="senhaAntiga" styleClass="senhaAntiga" placeholder="Senha Antiga" value="#{perfilController.usuario.senhaAntiga}" required="true" style="width: 100%">
+<!-- 			    	<p:ajax event="blur" update="mensagem-senha panel-confirmar" process="@this" listener="#{perfilController.validarSenhaAntiga(perfilController.usuario.senhaAntiga)}"/> -->
+			    </p:password>
+			    <br/><br/>
+			    
+			    <h:panelGroup id="panel-confirmar" >
+				    <p:outputLabel value="Nova Senha" for="senhaNova"/>
+				    <p:password id="senhaNova" styleClass="senhaAntiga" placeholder="Nova Senha" value="#{perfilController.usuario.senhaModal}" 
+				    	required="true" style="width: 100%" />
+				    <br/><br/>
+				    
+				    <p:outputLabel value="Confirmar Nova Senha" for="senhaNovaConfirmar"/>
+				    <p:password id="senhaNovaConfirmar" styleClass="senhaAntiga" placeholder="Senha Antiga" value="#{perfilController.usuario.senhaModalConfirmar}" 
+				    	required="true" style="width: 100%" >
+<!-- 				    	<p:ajax event="blur" process="@this" update="mensagem-senha panel-btn-confirmar" listener="#{perfilController.validarSenhaNova(perfilController.usuario)}"/> -->
+				    </p:password>
+				    <br/><br/>
+			    
+			    </h:panelGroup>		
+		    	<p:commandButton value="Alterar Senha" process="@all" styleClass="btn btn-success" action="#{perfilController.alterarSenha(perfilController.usuario)}" 
+			    		update="mensagem-senha"/>
+			</h:form>    
+		</p:dialog>  
+	</ui:define>
+ 
 </ui:composition>
 </html>

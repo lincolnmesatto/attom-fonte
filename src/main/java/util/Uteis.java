@@ -21,7 +21,6 @@ public class Uteis {
 		return (EntityManager)request.getAttribute("entityManager");
 	} 
 	
-	//MOSTRAR MENSAGEM
 	public static void mensagem(String mensagem){
  
 		FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -29,7 +28,6 @@ public class Uteis {
 		facesContext.addMessage(null, new FacesMessage("Alerta",mensagem));
 	}
  
-	//MOSTRAR MENSAGEM
 	public static void mensagemAtencao(String mensagem){
  
 		FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -50,9 +48,9 @@ public class Uteis {
 
 		return new BigInteger(1, m.digest()).toString(16);
 	}
+	
 	public static Integer getIdUsuarioLogado(){
 		FacesContext facesContext = FacesContext.getCurrentInstance();
-
 		return (Integer)facesContext.getExternalContext().getSessionMap().get("idUsuarioAutenticado");
 	}
 }

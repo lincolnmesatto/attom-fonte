@@ -6,12 +6,15 @@ import java.util.Collection;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import org.apache.log4j.Logger;
+
 import entity.Genero;
 import util.Uteis;
 
 public class GeneroRepository implements Serializable {
 
 	private static final long serialVersionUID = -8666196408104128266L;
+	private static Logger logger = Logger.getLogger(GeneroRepository.class);
 	
 	EntityManager entityManager;
 	
@@ -22,6 +25,7 @@ public class GeneroRepository implements Serializable {
 			
 			return (Collection<Genero>)query.getResultList();
 		} catch (Exception e) {
+			logger.error("erro ao listarGenero"+ e.getMessage());
 			return null;
 		}
 	}
@@ -33,6 +37,7 @@ public class GeneroRepository implements Serializable {
 			
 			return (Genero)query.getSingleResult();
 		} catch (Exception e) {
+			logger.error("erro ao obterGeneroPorDescricao"+ e.getMessage());
 			return null;
 		}
 	}
@@ -43,6 +48,7 @@ public class GeneroRepository implements Serializable {
 			
 			entityManager.persist(genero);
 		}catch (Exception e) {
+			logger.error("erro ao salvar genero"+ e.getMessage());
 			e.getStackTrace();
 		}	
 	}

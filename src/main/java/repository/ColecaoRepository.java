@@ -6,6 +6,8 @@ import java.util.Collection;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import org.apache.log4j.Logger;
+
 import entity.Colecao;
 import entity.ColecaoAutor;
 import entity.ColecaoGenero;
@@ -14,6 +16,7 @@ import util.Uteis;
 public class ColecaoRepository implements Serializable {
 
 	private static final long serialVersionUID = -8080794805801850994L;
+	private static Logger logger = Logger.getLogger(ColecaoRepository.class);
 
 	EntityManager entityManager;
 	
@@ -23,6 +26,7 @@ public class ColecaoRepository implements Serializable {
 			
 			entityManager.persist(colecao);
 		}catch (Exception e) {
+			logger.error("erro ao salvar colecao"+ e.getMessage());
 			e.getStackTrace();
 		}	
 	}
@@ -33,6 +37,7 @@ public class ColecaoRepository implements Serializable {
 			
 			entityManager.merge(colecao);
 		}catch (Exception e) {
+			logger.error("erro ao alterar colecao"+ e.getMessage());
 			e.getStackTrace();
 		}	
 	}
@@ -43,6 +48,7 @@ public class ColecaoRepository implements Serializable {
 			
 			entityManager.remove(colecao);
 		}catch (Exception e) {
+			logger.error("erro ao deletar colecao"+ e.getMessage());
 			e.getStackTrace();
 		}	
 	}
@@ -53,6 +59,7 @@ public class ColecaoRepository implements Serializable {
 			
 			entityManager.remove(colecaoAutor);
 		}catch (Exception e) {
+			logger.error("erro ao deletar colecao autor"+ e.getMessage());
 			e.getStackTrace();
 		}	
 	}
@@ -63,6 +70,7 @@ public class ColecaoRepository implements Serializable {
 			
 			entityManager.remove(colecaoGenero);
 		}catch (Exception e) {
+			logger.error("erro ao deletar colecao genero"+ e.getMessage());
 			e.getStackTrace();
 		}	
 	}
@@ -73,6 +81,7 @@ public class ColecaoRepository implements Serializable {
 			
 			entityManager.persist(colecaoAutor);
 		}catch (Exception e) {
+			logger.error("erro ao salvar colecao autor"+ e.getMessage());
 			e.getStackTrace();
 		}	
 	}
@@ -83,6 +92,7 @@ public class ColecaoRepository implements Serializable {
 			
 			entityManager.persist(colecaoGenero);
 		}catch (Exception e) {
+			logger.error("erro ao salvar colecao genero"+ e.getMessage());
 			e.getStackTrace();
 		}	
 	}
@@ -95,6 +105,7 @@ public class ColecaoRepository implements Serializable {
 			
 			return (Colecao)query.getSingleResult();
 		} catch (Exception e) {
+			logger.error("erro ao obterColecaoPorTituloUsuario"+ e.getMessage());
 			return null;
 		}
 	}
@@ -130,6 +141,7 @@ public class ColecaoRepository implements Serializable {
 			
 			return (Colecao)query.getSingleResult();
 		} catch (Exception e) {
+			logger.error("erro ao obterColecaoPorId"+ e.getMessage());
 			return null;
 		}
 	}

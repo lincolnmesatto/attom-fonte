@@ -8,7 +8,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
+import entity.TipoPerfilEnum;
 import entity.Usuario;
 import repository.UsuarioRepository;
 import util.Uteis;
@@ -18,6 +20,8 @@ import util.Uteis;
 public class UsuarioController implements Serializable {
 
 	private static final long serialVersionUID = -6004071469836183158L;
+	private static Logger logger = Logger.getLogger(UsuarioController.class);
+	
 
 	@Inject
 	private UsuarioRepository usuarioRepository;
@@ -34,49 +38,62 @@ public class UsuarioController implements Serializable {
 	}
 	
 	public String efetuarLogin(){
-		if(StringUtils.isEmpty(usuario.getLogin()) || StringUtils.isBlank(usuario.getLogin())){
- 
-			Uteis.mensagem("Favor informar o login!");
-			return null;
-		}else if(StringUtils.isEmpty(usuario.getSenha()) || StringUtils.isBlank(usuario.getSenha())){
- 
-			Uteis.mensagem("Favor informara senha!");
-			return null;
-		}else{
-			usuario.setSenha(criarHash(usuario));
-			usuario = usuarioRepository.validaUsuario(usuario);
-			if(usuario!= null){
-				FacesContext facesContext = FacesContext.getCurrentInstance();
-				facesContext.getExternalContext().getSessionMap().put("idUsuarioAutenticado", usuario.getId());
- 
-				return "sistema/home?faces-redirect=true";
-			}else{
-				Uteis.mensagem("N√£o foi poss√≠vel efetuar o login com esse usu√°rio e senha!");
+		try {
+			
+			if(StringUtils.isEmpty(usuario.getLogin()) || StringUtils.isBlank(usuario.getLogin())){
+	 
+				Uteis.mensagem("Favor informar o login!");
 				return null;
+			}else if(StringUtils.isEmpty(usuario.getSenha()) || StringUtils.isBlank(usuario.getSenha())){
+				Uteis.mensagem("Favor informara senha!");
+				return null;
+			}else{
+				usuario.setSenha(criarHash(usuario));
+				usuario = usuarioRepository.validaUsuario(usuario);
+				if(usuario!= null){
+					FacesContext facesContext = FacesContext.getCurrentInstance();
+					facesContext.getExternalContext().getSessionMap().put("idUsuarioAutenticado", usuario.getId());
+	 
+					logger.info("login realizado com sucesso: "+usuario.getLogin());
+					return "sistema/home?faces-redirect=true";
+				}else{
+					logger.error("login e/ou senha incorretos");
+					Uteis.mensagem("N„o foi possÌvel efetuar o login com esse usu·rio e senha!");
+					return null;
+				}
 			}
+		}catch (Exception e) {
+			logger.error("Erro no login: "+e.getMessage());
 		}
+		return null;	
  
 	}
 	public String cadastrarUsuario() {
 		Usuario u = usuarioRepository.validarLogin(usuario);
 		if(u != null){
-			Uteis.mensagemAtencao("Login j√° cadastrado!");
+			Uteis.mensagemAtencao("Login j· cadastrado!");
+			logger.error("Login j· cadastrado!");
+			
 			return null;
 		}
 		
 		u = usuarioRepository.validarEmail(usuario);
 		if(u != null){
-			Uteis.mensagemAtencao("Email j√° cadastrado!");
+			Uteis.mensagemAtencao("Email j· cadastrado!");
+			logger.error("Email j· cadastrado!");
 		}
 
 		u = usuario;
 		u.setSenha(criarHash(u));
+		u.setPerfil(TipoPerfilEnum.USUARIO);
 
 		usuarioRepository.cadastrarUsuario(u);
 
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		facesContext.getExternalContext().getSessionMap().put("idUsuarioAutenticado", u.getId());
 
+		logger.info("Usu·rio cadastrado com sucesso");
+		
 		return "sistema/home?faces-redirect=true";
 	}
 	
@@ -100,12 +117,16 @@ public class UsuarioController implements Serializable {
 	}
 
 	public void linkHomeScreen(){
-
 		verificaCadastro = !verificaCadastro;
-
 	}
 
-
+	public boolean verificarAcesso() {
+		Usuario u = usuarioRepository.obterUsuarioPorId(Uteis.getIdUsuarioLogado());
+		if(u.getPerfil().equals(TipoPerfilEnum.ADMIN))
+			return true;
+		
+		return false;
+	}
 	
 //	public Usuario getUsuarioSession(){
 //		FacesContext facesContext = FacesContext.getCurrentInstance();

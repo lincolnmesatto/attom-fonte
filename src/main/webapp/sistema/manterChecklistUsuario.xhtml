@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+ 
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+ 
+ 
+<ui:composition template="/template/layoutBase.xhtml">
+
+
+	<ui:define name="content">
+ 		<div class="card" style="margin-left: 15%; width: 30%; padding: 50px; margin-bottom: 500px; width: 75%; position: absolute">
+   			 <h:form>
+   			 	<p:growl id="growl-mensagem" showDetail="true" sticky="true" /> 
+			  	<h3 class="card-title">Cheklist</h3>
+			  	
+			    <div>
+			    	<h:panelGroup>
+						<p:inputNumber style="margin: 10px" size="32" value="#{checklistUsuarioController.usuario.valor}" decimalPlaces="2" 
+							modifyValueOnWheel="false" placeholder="Valor a ser gasto"/>
+					    <br/>
+					</h:panelGroup>
+			    
+					<p:dataTable id="checklist" var="check" value="#{checklistUsuarioController.listaChecklist}" rowKey="#{check.id}"
+		                     selection="#{checklistUsuarioController.checklistSelecionado}">
+		                     
+		                 <p:column>
+		                 	<p:selectBooleanCheckbox value="#{check.selecionado}">
+            					<p:ajax update="checklist" process="@this" listener="#{checklistUsuarioController.checkSelecionado(check)}"/>
+        					</p:selectBooleanCheckbox>	
+		                 </p:column>    
+	                     <p:column headerText="Titulo">
+	                		<h:outputText value="#{check.titulo}" />
+	            		 </p:column>
+	            		 <p:column headerText="Preco">
+	                		<h:outputText value="#{check.preco}"/>
+	            		 </p:column>
+	            		 <p:column headerText="Editora">
+	                		<h:outputText value="#{check.editora.nome}"/>
+	            		 </p:column>
+		            </p:dataTable>
+		            			    
+				    <p:commandButton style="margin: 15px" value="Salvar" icon="fa fa-fw fa-check" action="#{checklistUsuarioController.adicionarChecklist()}"/>
+            	</div>
+			</h:form>	
+		</div>	 
+	</ui:define>
+ 
+</ui:composition>
+</html>
